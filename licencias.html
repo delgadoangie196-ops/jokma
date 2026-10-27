@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Licencias de terceros · Jokmá</title>
+<meta name="description" content="Componentes de código abierto que usa Jokmá y sus licencias.">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<style>
+  :root {
+    --bg: #F4F5FA; --card: #FFFFFF; --text: #14161F; --muted: #5B6072; --accent: #6A61F0; --border: rgba(20,22,40,.1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0E1016; --card: #14161F; --text: #F2F3F8; --muted: #9BA0B5; --accent: #9C96FF; --border: rgba(255,255,255,.09); }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 16px 64px; }
+  header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  header img { width: 44px; height: 44px; border-radius: 12px; }
+  h1 { font-size: 26px; margin: 0; letter-spacing: -0.01em; }
+  .updated { color: var(--muted); font-size: 14px; margin: 0 0 28px; }
+  section { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 22px; margin-bottom: 14px; }
+  h2 { font-size: 17px; margin: 0 0 8px; }
+  p, li { font-size: 15px; }
+  p { margin: 0 0 10px; }
+  p:last-child { margin-bottom: 0; }
+  ul { margin: 0; padding-left: 20px; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); }
+  strong { font-weight: 650; }
+</style>
+<body>
+<main>
+  <header>
+    <img src="icons/icon-192.png" alt="">
+    <h1>Licencias de terceros</h1>
+  </header>
+  <p class="updated">Jokmá es una aplicación propia de su Titular. Para algunas funciones usa componentes de código abierto, cuyas licencias permiten usarlos en aplicaciones comerciales siempre que se muestren estos avisos.</p>
+
+  <section>
+    <h2>Componentes que usa la app</h2>
+    <ul><li><strong>Capacitor y sus complementos (app, archivos, notificaciones, compartir, pantalla de inicio)</strong> — © Ionic. Licencia: MIT.</li><li><strong>Texto a voz (@capacitor-community/text-to-speech)</strong> — © Capacitor Community. Licencia: MIT.</li><li><strong>PDF.js (lectura de PDF)</strong> — © Mozilla Foundation. Licencia: Apache 2.0.</li><li><strong>Tesseract.js y Tesseract OCR, con el idioma español (lectura de fotos)</strong> — © Jerome Wu y los autores de Tesseract. Licencia: Apache 2.0.</li><li><strong>Lector de texto ML Kit de Google (lectura de fotos en Android)</strong> — © Google LLC. Se usa según los Términos de ML Kit (<a href="https://developers.google.com/ml-kit/terms">developers.google.com/ml-kit/terms</a>), que permiten su uso gratuito en apps comerciales.</li><li><strong>Anuncios voluntarios (@capacitor-community/admob)</strong> — © Capacitor Community. Licencia: MIT. Usa el SDK de anuncios de Google (Google Mobile Ads), según los Términos de Google AdMob.</li><li><strong>Compras de Jokmá Pro (cordova-plugin-purchase)</strong> — © Fovea (Jean-Christophe Hoelt). Licencia: MIT. Usa la biblioteca de facturación de Google Play (Play Billing Library), según los términos de Google Play.</li><li><strong>Transformers.js (motor del modelo de Taylor)</strong> — © Hugging Face. Licencia: Apache 2.0.</li><li><strong>ONNX Runtime Web</strong> — © Microsoft Corporation. Licencia: MIT.</li><li><strong>Modelo de preguntas y respuestas de Taylor: RoBERTa-BNE ajustado con SQAC (nlp-en-es/roberta-base-bne-finetuned-sqac)</strong> — © Barcelona Supercomputing Center y nlp-en-es. Licencia: Apache 2.0.</li><li><strong>Taylor Pro (opcional): llama.cpp / ggml</strong> — © The ggml authors. Licencia: MIT.</li><li><strong>Taylor Pro (opcional): llama-cpp-capacitor</strong> — © Yakub Mohammad. Licencia: MIT.</li><li><strong>Taylor Pro (opcional, se descarga aparte): modelo Qwen2.5-1.5B-Instruct</strong> — © Alibaba Cloud (equipo Qwen). Licencia: Apache 2.0.</li><li><strong>Fuentes Inter, Lexend, Lora, Nunito y Patrick Hand</strong> — © Sus autores (Google Fonts). Licencia: SIL Open Font License 1.1.</li></ul>
+  </section>
+
+  <section>
+    <h2>Licencia Apache 2.0</h2>
+    <p>Los componentes marcados como «Apache 2.0» se distribuyen bajo la Licencia Apache, versión 2.0. Puedes leerla completa en <a href="https://www.apache.org/licenses/LICENSE-2.0">apache.org/licenses/LICENSE-2.0</a>. Copias incluidas en la app: <a href="vendor/pdfjs/LICENSE">PDF.js</a>, <a href="vendor/tesseract/LICENSE.md">Tesseract.js</a>, <a href="vendor/transformers/LICENSE-transformers.js.txt">Transformers.js</a>.</p>
+    <p>Salvo que la ley aplicable lo exija o se acuerde por escrito, el software distribuido bajo esta licencia se ofrece «TAL CUAL», sin garantías ni condiciones de ningún tipo. El modelo Qwen2.5-1.5B-Instruct no fue modificado; se usa en el formato GGUF publicado por el equipo Qwen.</p>
+  </section>
+
+  <section>
+    <h2>Licencia MIT</h2>
+    <p>Los componentes marcados como «MIT» se distribuyen bajo la licencia MIT, con el aviso de copyright de cada autor indicado arriba. Copia incluida: <a href="vendor/transformers/LICENSE-onnxruntime.txt">ONNX Runtime</a>.</p>
+    <p style="font-size:13px">Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:<br><br>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.<br><br>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+  </section>
+
+  <section>
+    <h2>SIL Open Font License 1.1</h2>
+    <p>Las fuentes se incluyen sin modificar bajo la SIL Open Font License 1.1. Texto completo: <a href="fonts/LICENSE-OFL.txt">LICENSE-OFL.txt</a>.</p>
+  </section>
+</main>
+</body>
+</html>

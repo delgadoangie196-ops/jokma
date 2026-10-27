@@ -1,0 +1,1331 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jokmá · Estudia con Taylor</title>
+<meta name="description" content="Jokmá convierte tus apuntes, fotos y PDF en resúmenes, preguntas, tarjetas, mapas mentales y juegos. Con Taylor, tu oso de estudio. Funciona sin internet.">
+<meta name="theme-color" content="#0E1016">
+<meta property="og:title" content="Jokmá · Estudia con Taylor">
+<meta property="og:description" content="Tus apuntes convertidos en resumen, preguntas, tarjetas y juegos. Sin internet.">
+<meta property="og:image" content="icons/icon-512.png">
+<link rel="icon" href="icons/icon-192.png">
+<style>
+:root {
+  --bg: #0E1016; --bg2: #14161F; --card: #171a25; --line: rgba(255,255,255,.09); --line2: rgba(255,255,255,.16);
+  --text: #F2F3F8; --muted: #9BA0B5; --accent: #7C5CFF; --accent-rgb: 124,92,255; --mint: #22D3AA; --coral: #FF6B6B; --amber: #FFC65C;
+  --r: 22px; --ease: cubic-bezier(.4,0,.2,1);
+  --font: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.55 var(--font); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; }
+img, svg { max-width: 100%; }
+.wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
+.glow { position: fixed; inset: -20vmax; pointer-events: none; z-index: -1;
+  background: radial-gradient(40vmax 40vmax at 15% 10%, rgba(var(--accent-rgb), .22), transparent 60%), radial-gradient(35vmax 35vmax at 90% 30%, rgba(34,211,170,.12), transparent 60%), radial-gradient(40vmax 40vmax at 60% 100%, rgba(255,107,107,.10), transparent 60%); }
+
+/* encabezado */
+header.top { position: sticky; top: 0; z-index: 30; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); background: rgba(14,16,22,.72); border-bottom: 1px solid var(--line); }
+header.top .wrap { display: flex; align-items: center; gap: 16px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; text-decoration: none; letter-spacing: -.01em; }
+.brand img { width: 34px; height: 34px; border-radius: 10px; }
+nav.links { display: flex; gap: 22px; margin-left: auto; }
+nav.links a { text-decoration: none; color: var(--muted); font-weight: 600; font-size: 15px; }
+nav.links a:hover { color: var(--text); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--line2); background: rgba(255,255,255,.05); color: var(--text); padding: 12px 20px; border-radius: 14px; font: 700 15px var(--font); text-decoration: none; cursor: pointer; transition: transform .2s var(--ease), background .2s, box-shadow .2s; }
+.btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.09); }
+.btn.primary { background: linear-gradient(135deg, #8b6dff, #6a48ff); border-color: transparent; box-shadow: 0 10px 30px rgba(var(--accent-rgb), .35); }
+.btn.primary:hover { box-shadow: 0 14px 38px rgba(var(--accent-rgb), .5); }
+.btn.small { padding: 9px 14px; font-size: 14px; border-radius: 12px; }
+.store { opacity: .9; }
+.store small { font-weight: 600; color: var(--muted); }
+
+/* portada */
+.hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: center; padding: 64px 0 40px; }
+.pill { display: inline-flex; gap: 8px; align-items: center; padding: 6px 12px; border-radius: 999px; background: rgba(var(--accent-rgb), .14); border: 1px solid rgba(var(--accent-rgb), .35); color: #cfc3ff; font-weight: 700; font-size: 13px; }
+h1 { font-size: clamp(36px, 6vw, 62px); line-height: 1.04; letter-spacing: -.03em; margin: 18px 0 16px; }
+h1 .grad { background: linear-gradient(90deg, #a891ff, var(--mint)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { color: var(--muted); font-size: clamp(16px, 2vw, 19px); max-width: 560px; margin: 0 0 26px; }
+.cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.facts { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 26px; color: var(--muted); font-size: 14px; font-weight: 600; }
+.facts span::before { content: '✓'; color: var(--mint); margin-right: 6px; font-weight: 900; }
+.stage { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.stage .halo { position: absolute; width: 78%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(var(--accent-rgb), .35), transparent 65%); filter: blur(10px); }
+.taylor { --fur:#5c4639; --cream:#efd7ae; --ear-in:#8c7062; --hoodie:#7953a0; --hoodie-dark:#5f3f86; --pack:#2fb38f; --shoe:#e5484d; --shoe-sole:#ffffff; --ink:#4a2414; --bottom:#3f63b8; --blush:#f2918a; }
+.stage .taylor { width: min(330px, 70vw); position: relative; cursor: pointer; }
+.bubble { position: absolute; background: #fff; color: #1b1d29; border-radius: 18px; padding: 12px 16px; font-weight: 650; font-size: 15px; line-height: 1.35; box-shadow: 0 12px 30px rgba(0,0,0,.35); max-width: 250px; }
+.stage .bubble { position: relative; z-index: 1; max-width: 300px; text-align: center; transform-origin: bottom center; animation: pop .45s var(--ease) both; }
+.stage .bubble::after { content: ''; position: absolute; left: 50%; margin-left: -9px; bottom: -8px; border: 9px solid transparent; border-top-color: #fff; border-bottom: 0; }
+@keyframes pop { from { opacity: 0; transform: scale(.85) translateY(6px); } to { opacity: 1; transform: none; } }
+
+section { padding: 72px 0; }
+.kicker { color: var(--mint); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: 13px; }
+h2 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -.02em; line-height: 1.1; margin: 8px 0 12px; }
+.sub { color: var(--muted); margin: 0 0 28px; max-width: 640px; }
+
+/* demo */
+.picker { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+.pick { text-align: left; border: 1px solid var(--line); background: var(--card); color: var(--text); border-radius: 18px; padding: 14px; cursor: pointer; font: inherit; transition: border-color .2s, transform .2s, background .2s; }
+.pick:hover { transform: translateY(-2px); }
+.pick .ic { font-size: 26px; }
+.pick b { display: block; margin-top: 6px; font-size: 15px; line-height: 1.25; }
+.pick small { color: var(--muted); font-weight: 600; }
+.pick[aria-pressed="true"] { border-color: rgba(var(--accent-rgb), .8); background: linear-gradient(160deg, rgba(var(--accent-rgb), .22), var(--card) 70%); }
+.demo { display: grid; grid-template-columns: .9fr 1.1fr; gap: 18px; align-items: start; }
+.paper { position: relative; border-radius: var(--r); padding: 22px 22px 22px 46px; color: #2a2a35; background: repeating-linear-gradient(#fbf8ef 0 29px, #d9e3f2 29px 30px); box-shadow: 0 20px 50px rgba(0,0,0,.35); max-height: 520px; overflow: auto; font-size: 15px; line-height: 30px; white-space: pre-wrap; }
+.paper::before { content: ''; position: absolute; left: 32px; top: 0; bottom: 0; width: 2px; background: #f1a7a7; }
+.paper .scan { position: absolute; left: 0; right: 0; height: 70px; top: -70px; background: linear-gradient(transparent, rgba(124,92,255,.35), transparent); pointer-events: none; }
+.paper.scanning .scan { animation: scan 1.3s linear infinite; }
+@keyframes scan { to { top: 100%; } }
+.panel { border: 1px solid var(--line); background: var(--card); border-radius: var(--r); min-height: 420px; overflow: hidden; display: flex; flex-direction: column; }
+.panel .empty { flex: 1; display: grid; place-items: center; text-align: center; padding: 30px; color: var(--muted); }
+.panel .empty b { color: var(--text); display: block; font-size: 18px; margin-bottom: 6px; }
+.tabs { display: flex; gap: 4px; padding: 8px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+.tabs button { flex: none; border: 0; background: transparent; color: var(--muted); font: 700 14px var(--font); padding: 9px 13px; border-radius: 11px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: rgba(var(--accent-rgb), .2); color: #fff; }
+.tabbody { padding: 18px; flex: 1; overflow: auto; max-height: 470px; }
+.loading { flex: 1; display: grid; place-items: center; text-align: center; color: var(--muted); padding: 30px; }
+.dots span { display: inline-block; width: 9px; height: 9px; margin: 0 3px; border-radius: 50%; background: var(--accent); animation: dot 1s infinite; }
+.dots span:nth-child(2) { animation-delay: .15s; } .dots span:nth-child(3) { animation-delay: .3s; }
+@keyframes dot { 50% { transform: translateY(-6px); opacity: .5; } }
+.sum { margin-bottom: 14px; }
+.sum b { color: #cfc3ff; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
+.sum p { margin: 4px 0 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chip { padding: 6px 11px; border-radius: 999px; background: rgba(34,211,170,.12); border: 1px solid rgba(34,211,170,.35); color: #9ff0da; font-weight: 700; font-size: 13px; }
+.quiz .qn { color: var(--muted); font-weight: 700; font-size: 13px; }
+.quiz h3 { margin: 6px 0 14px; font-size: 19px; line-height: 1.3; }
+.opt { display: block; width: 100%; text-align: left; margin-bottom: 9px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line2); background: rgba(255,255,255,.04); color: var(--text); font: 600 15px/1.35 var(--font); cursor: pointer; transition: background .2s, border-color .2s, transform .15s; }
+.opt:hover:not([disabled]) { transform: translateX(3px); border-color: rgba(var(--accent-rgb), .6); }
+.opt.ok { background: rgba(34,211,170,.18); border-color: var(--mint); }
+.opt.bad { background: rgba(255,107,107,.16); border-color: var(--coral); }
+.score { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; color: var(--muted); font-weight: 700; }
+.cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.flip { perspective: 900px; height: 150px; cursor: pointer; border: 0; padding: 0; background: none; font: inherit; color: inherit; }
+.flip .in { position: relative; width: 100%; height: 100%; transition: transform .55s var(--ease); transform-style: preserve-3d; }
+.flip.on .in { transform: rotateY(180deg); }
+.flip .f, .flip .b { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 16px; padding: 14px; display: grid; place-items: center; text-align: center; font-weight: 700; font-size: 14px; line-height: 1.35; overflow: hidden; }
+.flip .f { background: linear-gradient(150deg, #2a2347, #1b1d2b); border: 1px solid rgba(var(--accent-rgb), .45); }
+.flip .b { background: linear-gradient(150deg, #133a33, #182129); border: 1px solid rgba(34,211,170,.5); transform: rotateY(180deg); font-weight: 600; }
+.hint { color: var(--muted); font-size: 13px; margin: 0 0 10px; }
+.mm { display: grid; gap: 10px; }
+.mm .root { justify-self: center; padding: 12px 18px; border-radius: 16px; background: linear-gradient(135deg, #8b6dff, #6a48ff); font-weight: 800; text-align: center; box-shadow: 0 10px 26px rgba(var(--accent-rgb), .4); }
+.mm .branches { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; position: relative; padding-top: 14px; }
+.mm .br { border-radius: 16px; padding: 12px; background: rgba(255,255,255,.04); border: 1px solid var(--line2); border-top: 3px solid var(--c, var(--mint)); animation: pop .4s var(--ease) both; }
+.mm .br b { display: block; font-size: 14px; margin-bottom: 8px; }
+.mm .br span { display: block; font-size: 13px; color: var(--muted); padding: 5px 8px; margin-top: 5px; border-radius: 9px; background: rgba(255,255,255,.04); }
+.chat { display: flex; flex-direction: column; gap: 10px; min-height: 200px; }
+.msg { max-width: 88%; padding: 10px 14px; border-radius: 16px; font-size: 15px; line-height: 1.45; white-space: pre-line; animation: pop .35s var(--ease) both; }
+.msg.me { align-self: flex-end; background: linear-gradient(135deg, #8b6dff, #6a48ff); border-bottom-right-radius: 5px; }
+.msg.ty { align-self: flex-start; background: rgba(255,255,255,.07); border: 1px solid var(--line); border-bottom-left-radius: 5px; }
+.msg.ty .src { display: block; margin-top: 8px; font-size: 13px; color: var(--muted); }
+.asks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.asks button { border: 1px solid rgba(var(--accent-rgb), .5); background: rgba(var(--accent-rgb), .12); color: #e1d9ff; border-radius: 999px; padding: 8px 13px; font: 700 13.5px var(--font); cursor: pointer; }
+.asks button[disabled] { opacity: .45; cursor: default; }
+.note { color: var(--muted); font-size: 13px; margin-top: 14px; }
+
+/* funciones */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.feat { border: 1px solid var(--line); background: var(--card); border-radius: var(--r); padding: 22px; transition: transform .25s var(--ease), border-color .25s; }
+.feat:hover { transform: translateY(-4px); border-color: rgba(var(--accent-rgb), .5); }
+.feat .ic { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font-size: 24px; background: rgba(var(--accent-rgb), .16); margin-bottom: 14px; }
+.feat h3 { margin: 0 0 6px; font-size: 18px; }
+.feat p { margin: 0; color: var(--muted); font-size: 15px; }
+.private { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; border-radius: var(--r); padding: 28px; background: linear-gradient(135deg, rgba(34,211,170,.14), rgba(var(--accent-rgb), .12)); border: 1px solid rgba(34,211,170,.3); }
+.private .big { font-size: 54px; }
+.private h3 { margin: 0 0 6px; font-size: 22px; }
+.private p { margin: 0; color: #c9cede; }
+
+/* planes */
+.plans { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 860px; }
+.plan { border-radius: var(--r); padding: 26px; border: 1px solid var(--line); background: var(--card); }
+.plan.pro { border-color: rgba(var(--accent-rgb), .7); background: linear-gradient(160deg, rgba(var(--accent-rgb), .25), var(--card) 60%); position: relative; }
+.plan.pro .tag { position: absolute; top: -12px; right: 20px; background: var(--amber); color: #2a2000; font-weight: 800; font-size: 12px; padding: 4px 10px; border-radius: 999px; }
+.plan h3 { margin: 0; font-size: 20px; }
+.price { font-size: 38px; font-weight: 850; letter-spacing: -.02em; margin: 10px 0 2px; }
+.price small { font-size: 16px; color: var(--muted); font-weight: 700; }
+.plan .alt { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
+.plan ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 9px; }
+.plan li { padding-left: 26px; position: relative; }
+.plan li::before { content: '✓'; position: absolute; left: 0; color: var(--mint); font-weight: 900; }
+.small-print { color: var(--muted); font-size: 13px; margin-top: 16px; max-width: 860px; }
+
+/* preguntas frecuentes */
+details { border: 1px solid var(--line); background: var(--card); border-radius: 16px; padding: 4px 18px; margin-bottom: 10px; max-width: 860px; }
+summary { cursor: pointer; font-weight: 700; padding: 12px 0; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+summary::after { content: '+'; color: var(--accent); font-size: 22px; line-height: 1; }
+details[open] summary::after { content: '–'; }
+details p { margin: 0 0 14px; color: var(--muted); }
+
+footer { border-top: 1px solid var(--line); padding: 30px 0 110px; color: var(--muted); font-size: 14px; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: center; justify-content: space-between; }
+footer nav { display: flex; gap: 18px; flex-wrap: wrap; }
+
+/* Taylor guía */
+.guide { position: fixed; right: 14px; bottom: 14px; z-index: 40; display: flex; align-items: flex-end; gap: 6px; transition: transform .45s var(--ease), opacity .3s; }
+.guide.hide { transform: translateY(140%); opacity: 0; pointer-events: none; }
+.guide .taylor { width: 92px; cursor: pointer; filter: drop-shadow(0 8px 16px rgba(0,0,0,.45)); }
+.guide .bubble { position: relative; max-width: 230px; font-size: 14px; margin-bottom: 64px; }
+.guide .bubble::after { content: ''; position: absolute; right: -8px; bottom: 16px; border: 8px solid transparent; border-left-color: #fff; border-right: 0; }
+.guide .bubble.out { display: none; }
+.guide .x { position: absolute; top: -8px; right: -8px; width: 22px; height: 22px; border-radius: 50%; border: 0; background: #2c2f3d; color: #fff; font-size: 13px; cursor: pointer; }
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding-top: 34px; text-align: left; }
+  .stage { order: -1; }
+  .stage .taylor { width: min(240px, 60vw); }
+  .stage .bubble { max-width: 260px; font-size: 14px; }
+  .demo { grid-template-columns: 1fr; }
+  .paper { max-height: 280px; }
+  .picker { grid-template-columns: repeat(2, 1fr); }
+  .grid { grid-template-columns: 1fr 1fr; }
+  nav.links { display: none; }
+  header.top .store { margin-left: auto; }
+}
+@media (max-width: 600px) {
+  .grid, .plans { grid-template-columns: 1fr; }
+  .cards { grid-template-columns: 1fr; }
+  .private { grid-template-columns: 1fr; text-align: center; }
+  header.top .store small { display: none; }
+  .guide .bubble { max-width: 190px; }
+  .guide .taylor { width: 76px; }
+  section { padding: 54px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* Taylor (el mismo dibujo y las mismas poses de la app) */
+.mascot-floating-wrap .mascot-svg { width: 100%; height: auto; display: block; filter: drop-shadow(rgba(0, 0, 0, 0.35) 0px 6px 12px); }
+.mascot-svg { width: 150px; height: auto; overflow: visible; --fur: #a2673b; --fur-line: #87512d; --cream: #d79363; --ear-in: #d99566; --ink: #4a2414; --blush: #e07f62; --hoodie: #7953a0; --hoodie-dark: #5f3f86; --bottom: #3f63b8; --shoe: #e5484d; --shoe-sole: #ffffff; --pack: #2fb38f; }
+.mascot-svg .msg-arm-l, .mascot-svg .msg-arm-r, .mascot-svg .msg-head, .mascot-svg .msg-torso, .mascot-svg .msg-upper, .mascot-svg .msg-all, .mascot-svg .msg-foot-l, .mascot-svg .msg-foot-r, .mascot-svg .msg-eye, .mascot-svg .msg-lid, .mascot-svg .msg-brow, .mascot-svg .msg-mug, .mascot-svg .msg-sparkles path, .mascot-svg .msg-hearts path, .mascot-svg .msg-confetti rect, .mascot-svg .msg-zzz text { transform-box: fill-box; }
+.mascot-svg .msg-fur { fill: var(--fur); stroke: none; stroke-width: 0; stroke-linejoin: round; }
+.mascot-svg .msg-cream { fill: var(--cream); }
+.mascot-svg .msg-ear-in { fill: var(--ear-in); }
+.mascot-svg .msg-pad { fill: rgb(227, 165, 124); }
+.mascot-svg .msg-shadow { fill: rgba(0, 0, 0, 0.22); }
+.mascot-svg .msg-blush { fill: var(--blush); opacity: 0.75; transition: opacity 0.3s; }
+.mascot-svg .msg-brow { fill: none; stroke: rgb(110, 59, 32); stroke-width: 4.5; stroke-linecap: round; transition: transform 0.25s; }
+.mascot-svg .msg-eye-white { fill: rgb(255, 255, 255); }
+.mascot-svg .msg-iris-low { fill: rgb(122, 74, 42); opacity: 0.55; }
+.mascot-svg .msg-head-shade { fill: rgba(70, 30, 8, 0.08); pointer-events: none; }
+.mascot-svg .msg-brow { display: none; }
+.mascot-svg .msg-philtrum { fill: none; stroke: rgb(143, 85, 48); stroke-width: 3.2; stroke-linecap: round; }
+.mascot-svg .msg-cuff { fill: color-mix(in srgb, var(--hoodie) 84%, #000 16%); }
+.mascot-svg .msg-mitt { fill: color-mix(in srgb, var(--fur) 92%, #fff 8%); }
+.mascot-svg .msg-mitt-shade { fill: rgba(0, 0, 0, 0.16); }
+.mascot-svg .msg-mitt-line { fill: none; stroke: rgba(0, 0, 0, 0.25); stroke-width: 1.6; stroke-linecap: round; }
+.mascot-svg .msg-mitt-hl { fill: rgba(255, 255, 255, 0.2); }
+.mascot-svg .msg-blush { transform-box: fill-box; transform-origin: 50% 50%; transition: transform 0.25s, opacity 0.3s; }
+.mascot-svg.pose-happy .msg-blush, .mascot-svg.pose-celebrating .msg-blush, .mascot-svg.react-pat .msg-blush, .mascot-svg.react-tickle .msg-blush { transform: translateY(-6px) scale(1.18, 1.1); opacity: 0.9; }
+.mascot-svg.pose-happy .msg-head .msg-cream, .mascot-svg.pose-celebrating .msg-head .msg-cream, .mascot-svg.react-pat .msg-head .msg-cream, .mascot-svg.react-tickle .msg-head .msg-cream { transform: translateY(-2px); }
+.mascot-svg .msg-hem { fill: color-mix(in srgb, var(--hoodie) 88%, #000 12%); }
+.mascot-svg .msg-hood-shape { fill: color-mix(in srgb, var(--hoodie) 90%, #000 10%); stroke: none; }
+.mascot-svg .msg-goldframes .glare.thin { stroke-width: 2; }
+.mascot-svg .msg-spectacles { display: none; }
+.mascot-svg.fur-anteojos { --fur: #5c4639; --cream: #efd7ae; --ear-in: #8c7062; --blush: #f2918a; }
+.mascot-svg.fur-anteojos .msg-spectacles { display: inline; fill: var(--cream); }
+.mascot-svg.fur-anteojos .msg-pad { fill: rgb(165, 136, 122); }
+.mascot-svg.fur-anteojos .msg-head-shade { fill: rgba(40, 20, 10, 0.12); }
+.mascot-svg.fur-anteojos .msg-philtrum { stroke: rgb(167, 122, 82); }
+.mascot-svg.fur-cafe { --fur: #a2673b; --cream: #d79363; --ear-in: #d99566; }
+.mascot-svg.fur-miel { --fur: #c98a4b; --cream: #f1c995; --ear-in: #eab07a; }
+.mascot-svg.fur-miel .msg-pad { fill: rgb(240, 189, 138); }
+.mascot-svg.fur-chocolate { --fur: #5e3a24; --cream: #c4946a; --ear-in: #9a6a4a; }
+.mascot-svg.fur-chocolate .msg-pad { fill: rgb(180, 131, 95); }
+.mascot-svg.fur-negro { --fur: #2b2523; --cream: #dcc6a4; --ear-in: #4f4440; --blush: #e98a86; }
+.mascot-svg.fur-negro .msg-pad { fill: rgb(110, 96, 90); }
+.mascot-svg.fur-negro .msg-head-shade { fill: rgba(0, 0, 0, 0.16); }
+.mascot-svg.fur-negro .msg-philtrum { stroke: rgb(168, 139, 108); }
+.mascot-svg.fur-polar { --fur: #f3eee6; --cream: #ffffff; --ear-in: #f2d4cc; --blush: #ff9a9a; }
+.mascot-svg.fur-polar .msg-pad { fill: rgb(242, 212, 204); }
+.mascot-svg.fur-polar .msg-head-shade { fill: rgba(120, 100, 80, 0.07); }
+.mascot-svg.fur-polar .msg-philtrum { stroke: rgb(201, 184, 168); }
+.mascot-svg .msg-iris { fill: rgb(93, 54, 26); }
+.mascot-svg .msg-goldframes circle { fill: rgba(255, 255, 255, 0.14); stroke: rgb(210, 161, 91); stroke-width: 2.6; }
+.mascot-svg .msg-goldframes .bridge, .mascot-svg .msg-goldframes .temple { fill: none; stroke: rgb(210, 161, 91); stroke-width: 2.6; stroke-linecap: round; }
+.mascot-svg .msg-goldframes .glare { fill: none; stroke: rgb(255, 255, 255); stroke-width: 4; stroke-linecap: round; opacity: 0.4; }
+.mascot-svg.equip-glasses .msg-goldframes { display: none; }
+.mascot-svg .msg-smile-in { fill: rgb(123, 32, 24); stroke: none; }
+.mascot-svg .msg-smile-tongue { fill: rgb(216, 67, 74); }
+.mascot-svg .msg-g-badge text { font-family: "Gissdel Nunito", Nunito, system-ui, sans-serif; font-weight: 900; font-size: 13.5px; letter-spacing: 0.5px; }
+.mascot-svg .msg-g-badge .msg-logo { fill: rgb(255, 255, 255); }
+.mascot-svg .msg-g-badge .msg-logo-shadow { fill: rgba(0, 0, 0, 0.18); }
+.mascot-svg .msg-pupil { fill: rgb(27, 15, 7); }
+.mascot-svg .msg-shine { fill: rgb(255, 255, 255); }
+.mascot-svg .msg-look { transition: transform 0.14s ease-out; }
+.mascot-svg .msg-eye { transition: transform 0.2s; transform-origin: 50% 50%; }
+.mascot-svg .msg-lid { fill: var(--fur); transform-origin: 50% 0%; transform: scaleY(0); transition: transform 0.08s; }
+.mascot-svg .msg-line { fill: none; stroke: var(--ink); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.mascot-svg .msg-nose { fill: rgb(89, 51, 21); }
+.mascot-svg .msg-nose-shine { fill: rgb(255, 255, 255); opacity: 0.55; }
+.mascot-svg .msg-mouth-in { fill: rgb(123, 32, 24); }
+.mascot-svg .msg-tongue { fill: rgb(216, 67, 74); }
+.mascot-svg .msg-hoodie-shape, .mascot-svg .msg-sleeve { fill: var(--hoodie); stroke: none; }
+.mascot-svg .msg-sleeve { fill: color-mix(in srgb, var(--hoodie) 95%, #000 5%); stroke: none; }
+.mascot-svg .msg-sleeve .msg-crease { fill: none; stroke: color-mix(in srgb, var(--hoodie) 70%, #000 30%); stroke-width: 2.2; stroke-linecap: round; opacity: 0.55; }
+.mascot-svg .msg-hoodie-detail { fill: none; stroke: var(--hoodie-dark); stroke-width: 3; stroke-linecap: round; }
+.mascot-svg .msg-string { stroke: rgb(255, 255, 255); stroke-width: 3.5; stroke-linecap: round; }
+.mascot-svg .msg-stripe { stroke: rgba(255, 255, 255, 0.75); stroke-width: 7; }
+.mascot-svg .msg-tee-star { fill: rgb(255, 207, 77); }
+.mascot-svg .msg-bottom-shape { fill: var(--bottom); stroke: rgba(0, 0, 0, 0.25); stroke-width: 2.5; }
+.mascot-svg .msg-shoe-shape { fill: var(--shoe); stroke: rgba(0, 0, 0, 0.3); stroke-width: 2.5; }
+.mascot-svg .msg-shoe-sole { fill: var(--shoe-sole); stroke: rgba(0, 0, 0, 0.25); stroke-width: 2; }
+.mascot-svg .msg-shoe-star { fill: rgb(255, 207, 77); }
+.mascot-svg .msg-pack { fill: var(--pack); stroke: rgba(0, 0, 0, 0.25); stroke-width: 3; }
+.mascot-svg .msg-strap { fill: none; stroke: var(--pack); stroke-width: 9; stroke-linecap: round; }
+.mascot-svg .msg-pack-badge { fill: rgb(255, 207, 77); stroke: rgb(201, 154, 46); stroke-width: 1.5; }
+.mascot-svg .msg-scarf path { fill: rgb(229, 72, 77); stroke: rgb(179, 38, 43); stroke-width: 2.5; }
+.mascot-svg .msg-bowtie path, .mascot-svg .msg-head-bow path { fill: rgb(255, 111, 165); stroke: rgb(201, 63, 120); stroke-width: 2.5; }
+.mascot-svg .msg-bowtie circle, .mascot-svg .msg-head-bow circle { fill: rgb(201, 63, 120); }
+.mascot-svg .msg-medal line { stroke: rgb(229, 72, 77); stroke-width: 5; stroke-linecap: round; }
+.mascot-svg .msg-medal circle { fill: rgb(255, 207, 77); stroke: rgb(201, 154, 46); stroke-width: 2.5; }
+.mascot-svg .msg-medal text { fill: rgb(168, 122, 18); font: 800 14px system-ui, sans-serif; }
+.mascot-svg .msg-glasses { fill: rgba(255, 255, 255, 0.12); stroke: rgb(43, 43, 43); stroke-width: 4; }
+.mascot-svg .msg-hat-grad .board { fill: rgb(38, 40, 51); }
+.mascot-svg .msg-hat-grad .cap { fill: rgb(53, 56, 71); }
+.mascot-svg .msg-hat-grad .tassel { stroke: rgb(255, 207, 77); stroke-width: 3; fill: none; }
+.mascot-svg .msg-hat-grad circle { fill: rgb(255, 207, 77); }
+.mascot-svg .msg-hat-party path { fill: rgb(124, 116, 255); stroke: rgb(90, 82, 214); stroke-width: 2.5; }
+.mascot-svg .msg-hat-party .dot { fill: rgb(255, 207, 77); }
+.mascot-svg .msg-hat-party .pom { fill: rgb(255, 111, 165); }
+.mascot-svg .msg-hat-crown path { fill: rgb(255, 207, 77); stroke: rgb(201, 154, 46); stroke-width: 3; stroke-linejoin: round; }
+.mascot-svg .msg-hat-crown circle { fill: rgb(229, 72, 77); }
+.mascot-svg .msg-cap path { fill: rgb(229, 72, 77); stroke: rgb(168, 40, 44); stroke-width: 2.5; }
+.mascot-svg .msg-cap .visor { fill: rgb(196, 51, 56); }
+.mascot-svg .msg-headphones .band { fill: none; stroke: rgb(43, 45, 58); stroke-width: 8; stroke-linecap: round; }
+.mascot-svg .msg-headphones rect { fill: rgb(43, 45, 58); }
+.mascot-svg .msg-headphones .pad { fill: rgb(124, 116, 255); }
+.mascot-svg .msg-flower circle { fill: rgb(255, 255, 255); stroke: rgb(231, 214, 240); stroke-width: 1.5; }
+.mascot-svg .msg-flower .center { fill: rgb(255, 207, 77); stroke: none; }
+.mascot-svg .msg-sparkles path { fill: rgb(255, 212, 92); }
+.mascot-svg .msg-book .cover { fill: rgb(76, 175, 125); stroke: rgb(46, 107, 79); stroke-width: 2.5; }
+.mascot-svg .msg-book .pages { fill: rgb(255, 248, 232); stroke: rgb(216, 201, 168); stroke-width: 1.5; }
+.mascot-svg .msg-mug .cup { fill: rgb(255, 255, 255); stroke: rgb(201, 201, 214); stroke-width: 2.5; }
+.mascot-svg .msg-mug .coffee { fill: rgb(138, 90, 50); }
+.mascot-svg .msg-mug .handle { fill: none; stroke: rgb(201, 201, 214); stroke-width: 4; }
+.mascot-svg .msg-mug .steam { fill: none; stroke: rgba(180, 180, 200, 0.8); stroke-width: 2.5; stroke-linecap: round; }
+.mascot-svg .msg-zzz { fill: rgb(142, 163, 201); font: 800 18px system-ui, sans-serif; }
+.mascot-svg .msg-thought circle { fill: rgb(255, 255, 255); stroke: rgb(214, 217, 230); stroke-width: 2; }
+.mascot-svg .msg-thought text { fill: rgb(124, 116, 255); font: 800 22px system-ui, sans-serif; }
+.mascot-svg .msg-heart { fill: rgb(255, 92, 134); }
+.mascot-svg .msg-confetti rect { rx: 1.5; }
+.mascot-svg .msg-opt { display: none; }
+.mascot-svg .msg-arm-l { transform-origin: 85% 12%; transition: transform 0.3s; }
+.mascot-svg .msg-arm-r { transform-origin: 15% 12%; transition: transform 0.3s; }
+.mascot-svg .msg-head { transform-origin: 50% 92%; transition: transform 0.3s; }
+.mascot-svg .msg-foot-l, .mascot-svg .msg-foot-r { transform-origin: 50% 0%; transition: transform 0.25s; }
+.mascot-svg .msg-torso { transform-origin: 50% 100%; animation: 3.4s ease-in-out 0s infinite normal none running msg-breathe; }
+@keyframes msg-breathe { 
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02, 0.985); }
+}
+@keyframes msg-wave { 
+  0%, 100% { transform: rotate(-120deg); }
+  50% { transform: rotate(-92deg); }
+}
+@keyframes msg-cheer-l { 
+  0%, 100% { transform: rotate(155deg); }
+  50% { transform: rotate(138deg); }
+}
+@keyframes msg-cheer-r { 
+  0%, 100% { transform: rotate(-155deg); }
+  50% { transform: rotate(-138deg); }
+}
+@keyframes msg-hop { 
+  0%, 100% { transform: translateY(0px); }
+  45% { transform: translateY(-12px); }
+}
+@keyframes msg-walk-l { 
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(-8deg); }
+}
+@keyframes msg-walk-r { 
+  0%, 100% { transform: translateY(-7px) rotate(8deg); }
+  50% { transform: translateY(0px) rotate(0deg); }
+}
+@keyframes msg-sway { 
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+@keyframes msg-float-up { 
+  0% { opacity: 0; transform: translateY(6px) scale(0.7); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-26px) scale(1.1); }
+}
+@keyframes msg-twinkle { 
+  0%, 100% { opacity: 0.2; transform: scale(0.6); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+@keyframes msg-giggle { 
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-4deg); }
+  75% { transform: rotate(4deg); }
+}
+@keyframes msg-confetti { 
+  0% { opacity: 0; transform: translateY(-6px) rotate(0deg); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(40px) rotate(220deg); }
+}
+@keyframes msg-steam { 
+  0%, 100% { opacity: 0.2; transform: translateY(2px); }
+  50% { opacity: 0.9; transform: translateY(-3px); }
+}
+@keyframes msg-dangle { 
+  0%, 100% { transform: rotate(-7deg); }
+  50% { transform: rotate(7deg); }
+}
+.mascot-svg.is-blinking .msg-lid { transform: scaleY(1.02); }
+.mascot-svg.pose-waving .msg-arm-r { animation: 0.9s ease-in-out 0s infinite normal none running msg-wave; }
+.mascot-svg.pose-studying .msg-book, .mascot-svg.pose-reading .msg-book { display: inline; }
+.mascot-svg.pose-studying .msg-arm-l, .mascot-svg.pose-reading .msg-arm-l { transform: rotate(-24deg); }
+.mascot-svg.pose-studying .msg-arm-r, .mascot-svg.pose-reading .msg-arm-r { transform: rotate(24deg); }
+.mascot-svg.pose-studying .msg-head, .mascot-svg.pose-reading .msg-head { transform: rotate(4deg) translateY(4px); }
+.mascot-svg.pose-studying .msg-lid, .mascot-svg.pose-reading .msg-lid { transform: scaleY(0.14); }
+.mascot-svg.pose-happy .msg-eye, .mascot-svg.pose-celebrating .msg-eye { display: none; }
+.mascot-svg.pose-happy .msg-eyes-happy, .mascot-svg.pose-celebrating .msg-eyes-happy { display: inline; }
+.mascot-svg.pose-happy .msg-mouth-smile, .mascot-svg.pose-celebrating .msg-mouth-smile { display: none; }
+.mascot-svg.pose-happy .msg-mouth-open, .mascot-svg.pose-celebrating .msg-mouth-open { display: inline; }
+.mascot-svg.pose-happy .msg-blush, .mascot-svg.pose-celebrating .msg-blush { opacity: 0.8; }
+.mascot-svg.pose-happy .msg-arm-r { transform: rotate(-35deg); }
+.mascot-svg.pose-celebrating .msg-arm-l { animation: 0.5s ease-in-out 0s infinite normal none running msg-cheer-l; }
+.mascot-svg.pose-celebrating .msg-arm-r { animation: 0.5s ease-in-out 0s infinite normal none running msg-cheer-r; }
+.mascot-svg.pose-celebrating .msg-all { animation: 0.5s ease-in-out 0s infinite normal none running msg-hop; }
+.mascot-svg.pose-celebrating .msg-confetti { display: inline; }
+.mascot-svg.pose-celebrating .msg-confetti rect { animation: 1.3s linear 0s infinite normal none running msg-confetti; }
+.mascot-svg.pose-celebrating .msg-confetti rect:nth-child(2n) { animation-delay: 0.35s; }
+.mascot-svg.pose-celebrating .msg-confetti rect:nth-child(3n) { animation-delay: 0.7s; }
+.mascot-svg.pose-walking .msg-foot-l { animation: 0.55s ease-in-out 0s infinite normal none running msg-walk-l; }
+.mascot-svg.pose-walking .msg-foot-r { animation: 0.55s ease-in-out 0s infinite normal none running msg-walk-r; }
+.mascot-svg.pose-walking .msg-upper { animation: 1.1s ease-in-out 0s infinite normal none running msg-sway; transform-origin: 50% 100%; }
+.mascot-svg.pose-sitting .msg-foot-l { transform: rotate(18deg) translateY(-4px); }
+.mascot-svg.pose-sitting .msg-foot-r { transform: rotate(-18deg) translateY(-4px); }
+.mascot-svg.pose-thinking .msg-head { transform: rotate(-6deg); }
+.mascot-svg.pose-thinking .msg-arm-r { transform: rotate(158deg); }
+.mascot-svg.pose-thinking .msg-brow-r { transform: translateY(-6px) rotate(-8deg); }
+.mascot-svg.pose-thinking .msg-mouth-smile { display: none; }
+.mascot-svg.pose-thinking .msg-mouth-flat { display: inline; }
+.mascot-svg.pose-thinking .msg-thought { display: inline; }
+.mascot-svg.pose-sleeping .msg-eye { display: none; }
+.mascot-svg.pose-sleeping .msg-eyes-sleep { display: inline; }
+.mascot-svg.pose-sleeping .msg-head { transform: rotate(-10deg) translateY(4px); }
+.mascot-svg.pose-sleeping .msg-mouth-smile { display: none; }
+.mascot-svg.pose-sleeping .msg-mouth-o { display: inline; }
+.mascot-svg.pose-sleeping .msg-zzz { display: inline; }
+.mascot-svg.pose-sleeping .msg-zzz text:nth-child(1) { animation: 2.4s ease-in-out 0s infinite normal none running msg-float-up; }
+.mascot-svg.pose-sleeping .msg-zzz text:nth-child(2) { animation: 2.4s ease-in-out 0.8s infinite normal none running msg-float-up; }
+.mascot-svg.pose-sleeping .msg-torso { animation-duration: 4.6s; }
+.mascot-svg.pose-resting .msg-lid { transform: scaleY(0.45); }
+.mascot-svg.pose-resting .msg-arm-r { transform: rotate(-62deg); }
+.mascot-svg.pose-resting .msg-mug { display: inline; transform-origin: 50% 50%; transform: rotate(62deg); }
+.mascot-svg.pose-resting .msg-mug .steam { animation: 1.8s ease-in-out 0s infinite normal none running msg-steam; }
+.mascot-svg.pose-surprised .msg-eye { transform: scale(1.14); }
+.mascot-svg.pose-surprised .msg-brow { transform: translateY(-7px); }
+.mascot-svg.pose-surprised .msg-mouth-smile { display: none; }
+.mascot-svg.pose-surprised .msg-mouth-o { display: inline; }
+.mascot-svg.pose-surprised .msg-arm-l { transform: rotate(40deg); }
+.mascot-svg.pose-surprised .msg-arm-r { transform: rotate(-40deg); }
+.mascot-svg.react-pat .msg-eye { display: none; }
+.mascot-svg.react-pat .msg-eyes-happy { display: inline; }
+.mascot-svg.react-pat .msg-blush { opacity: 0.9; }
+.mascot-svg.react-pat .msg-head { transform: rotate(-5deg) translateY(3px); }
+.mascot-svg.react-pat .msg-hearts { display: inline; }
+.mascot-svg.react-pat .msg-hearts path { animation: 1.2s ease-out 0s 1 normal forwards running msg-float-up; }
+.mascot-svg.react-pat .msg-hearts path:nth-child(2) { animation-delay: 0.2s; }
+.mascot-svg.react-pat .msg-hearts path:nth-child(3) { animation-delay: 0.4s; }
+.mascot-svg.react-tickle .msg-eye { display: none; }
+.mascot-svg.react-tickle .msg-eyes-happy { display: inline; }
+.mascot-svg.react-tickle .msg-mouth-smile { display: none; }
+.mascot-svg.react-tickle .msg-mouth-open { display: inline; }
+.mascot-svg.react-tickle .msg-blush { opacity: 0.85; }
+.mascot-svg.react-tickle .msg-upper { animation: 0.18s linear 0s 6 normal none running msg-giggle; transform-origin: 50% 100%; }
+.mascot-svg.react-tickle .msg-arm-l { transform: rotate(-30deg); }
+.mascot-svg.react-tickle .msg-arm-r { transform: rotate(30deg); }
+.mascot-svg.react-boop .msg-eye { transform: scale(0.85); }
+.mascot-svg.react-boop .msg-lid { transform: scaleY(0.6); }
+.mascot-svg.react-boop .msg-mouth-smile { display: none; }
+.mascot-svg.react-boop .msg-mouth-o { display: inline; }
+.mascot-svg.react-boop .msg-head { transform: translateY(-3px) rotate(3deg); }
+.mascot-svg.react-hop .msg-all { animation: 0.45s ease-in-out 0s 2 normal none running msg-hop; }
+.mascot-svg.react-hop .msg-mouth-smile { display: none; }
+.mascot-svg.react-hop .msg-mouth-open { display: inline; }
+.mascot-svg.react-held .msg-eye { transform: scale(1.12); }
+.mascot-svg.react-held .msg-brow { transform: translateY(-6px); }
+.mascot-svg.react-held .msg-mouth-smile { display: none; }
+.mascot-svg.react-held .msg-mouth-o { display: inline; }
+.mascot-svg.react-held .msg-arm-l { transform: rotate(125deg); }
+.mascot-svg.react-held .msg-arm-r { transform: rotate(-125deg); }
+.mascot-svg.react-held .msg-foot-l { animation: 0.5s ease-in-out 0s infinite normal none running msg-dangle; }
+.mascot-svg.react-held .msg-foot-r { animation: 0.5s ease-in-out 0.25s infinite normal none running msg-dangle; }
+.mascot-svg.wear-hoodie .msg-hoodie, .mascot-svg.wear-hoodie .msg-sleeve, .mascot-svg.wear-sweater .msg-hoodie, .mascot-svg.wear-sweater .msg-sleeve, .mascot-svg.wear-sweater .msg-stripes, .mascot-svg.wear-tee .msg-hoodie, .mascot-svg.wear-tee .msg-sleeve, .mascot-svg.wear-tee .msg-tee-star { display: inline; }
+.mascot-svg.wear-hoodie .msg-hood, .mascot-svg.wear-hoodie .msg-strings, .mascot-svg.wear-hoodie .msg-pocket { display: inline; }
+.mascot-svg.wear-tee { --hoodie: #f7f7fb; --hoodie-dark: #c9c9d6; }
+.mascot-svg.wear-sweater { --hoodie: #e5484d; --hoodie-dark: #b3262b; }
+.mascot-svg.equip-top_hoodie_pink { --hoodie: #ff8fb8; --hoodie-dark: #d9628f; }
+.mascot-svg.equip-top_hoodie_green { --hoodie: #3fbf8f; --hoodie-dark: #2a8f69; }
+.mascot-svg.equip-top_hoodie_yellow { --hoodie: #ffc94d; --hoodie-dark: #d39b1f; }
+.mascot-svg.equip-top_hoodie_purple { --hoodie: #b9a6ff; --hoodie-dark: #8f78e8; }
+.mascot-svg.equip-top_default .msg-g-badge { display: inline; }
+.mascot-svg.equip-top_default .msg-pocket { display: none; }
+.mascot-svg.equip-top_scarf .msg-scarf { display: inline; }
+.mascot-svg.equip-top_bowtie .msg-bowtie { display: inline; }
+.mascot-svg.equip-bottom_shorts .msg-bottom { display: inline; }
+.mascot-svg.equip-bottom_skirt .msg-skirt { display: inline; }
+.mascot-svg.equip-bottom_skirt { --bottom: #ff8fb8; }
+.mascot-svg.equip-bottom_overalls .msg-bottom, .mascot-svg.equip-bottom_overalls .msg-overall-straps { display: inline; }
+.mascot-svg.equip-bottom_overalls { --bottom: #5b86d6; }
+.mascot-svg.wear-shoes .msg-shoes { display: inline; }
+.mascot-svg.equip-shoes_star .msg-shoe-star { display: inline; }
+.mascot-svg.equip-shoes_white { --shoe: #f4f4f8; --shoe-sole: #7c74ff; }
+.mascot-svg.equip-shoes_boots { --shoe: #ffcf4d; --shoe-sole: #c99a2e; }
+.mascot-svg.equip-shoes_boots .msg-boot-top { display: inline; }
+.mascot-svg.wear-pack .msg-pack-g, .mascot-svg.wear-pack .msg-straps { display: inline; }
+.mascot-svg.equip-backpack_pink { --pack: #ff8fb8; }
+.mascot-svg.equip-backpack_star .msg-pack-badge { display: inline; }
+.mascot-svg.equip-backpack_star { --pack: #7c74ff; }
+.mascot-svg.equip-glasses .msg-glasses, .mascot-svg.equip-grad_hat .msg-hat-grad, .mascot-svg.equip-party_hat .msg-hat-party, .mascot-svg.equip-crown .msg-hat-crown, .mascot-svg.equip-cap .msg-cap, .mascot-svg.equip-headphones .msg-headphones, .mascot-svg.equip-head_bow .msg-head-bow, .mascot-svg.equip-flower .msg-flower, .mascot-svg.equip-medal .msg-medal, .mascot-svg.equip-sparkles .msg-sparkles { display: inline; }
+.mascot-svg.equip-sparkles .msg-sparkles path { animation: 1.6s ease-in-out 0s infinite normal none running msg-twinkle; transform-origin: 50% 50%; }
+.mascot-svg.equip-sparkles .msg-sparkles path:nth-child(2) { animation-delay: 0.5s; }
+.mascot-svg.equip-sparkles .msg-sparkles path:nth-child(3) { animation-delay: 1s; }
+@media (prefers-reduced-motion: reduce) {
+  .mascot-interactive, .mascot-svg *, .mascot-svg .msg-torso { animation: auto ease 0s 1 normal none running none !important; }
+}
+.mascot-hero .mascot-svg { width: 190px; }
+.mascot-item .mascot-svg { width: 92px; }
+.mascot-pose-card .mascot-svg { width: 70px; }
+.mascot-sheet .mascot-sheet-bear .mascot-svg { width: 120px; }
+.mascot-sheet .mascot-item .mascot-svg { width: 70px; }
+.dash-hero-bear .mascot-svg { width: 104px; }
+.mascot-floating-wrap .mascot-svg { filter: drop-shadow(rgba(0, 0, 0, 0.45) 0px 8px 18px); }
+.tour-head .mascot-svg { width: 58px; }
+html.app-quieta .mascot-interactive, html.app-quieta .mascot-svg, html.app-quieta .mascot-svg *, html.app-quieta .streak-flame, html.app-quieta .as-spark, html.app-quieta .candle-halo, html.app-quieta .candle-flame, html.app-quieta .candle-smoke i, html.app-quieta .gv-llama, html.app-quieta .gv-halo { animation-play-state: paused !important; }
+.taylor svg.mascot-svg { width: 100%; height: auto; max-width: none; display: block; }
+</style>
+</head>
+<body>
+<div class="glow" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio"><img src="icons/logo-mark.png" alt="">Jokmá</a>
+    <nav class="links" aria-label="Secciones">
+      <a href="#pruebalo">Pruébalo</a><a href="#funciones">Funciones</a><a href="#planes">Planes</a><a href="#preguntas">Preguntas</a>
+    </nav>
+    <a class="btn small store" href="#planes" title="Muy pronto en Google Play">▶ Google Play <small>· muy pronto</small></a>
+  </div>
+</header>
+
+<main id="inicio">
+  <div class="wrap hero">
+    <div>
+      <span class="pill">📚 Tu compañero de estudio</span>
+      <h1>Tus apuntes, convertidos en <span class="grad">estudio de verdad</span>.</h1>
+      <p class="lead">Sube una foto, un PDF o pega tu texto. Jokmá saca el resumen, te hace preguntas, arma tarjetas y mapas mentales, y Taylor te explica lo que no entiendas. Todo dentro de tu teléfono.</p>
+      <div class="cta">
+        <a class="btn primary" href="#pruebalo">✨ Pruébalo ahora</a>
+        <a class="btn" href="#planes">Ver planes</a>
+      </div>
+      <div class="facts"><span>Funciona sin internet</span><span>Fotos, PDF y Word</span><span>Gratis para empezar</span></div>
+    </div>
+    <div class="stage">
+      <div class="halo" aria-hidden="true"></div>
+      <div class="bubble" id="hero-bubble">¡Hola! Soy <b>Taylor</b> 🐻 Toca un apunte de abajo y te muestro lo que hago.</div>
+      <div class="taylor" id="hero-taylor" title="Tócame"><svg class="mascot-svg mascot-interactive  pose-normal equip-top_default wear-hoodie equip-bottom_default equip-shoes_default equip-acc_none equip-backpack_none fur-anteojos" viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg" aria-label="Taylor, el oso de Jokmá" role="img">
+  <defs><linearGradient id="msgSilver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e4e1ef"></stop><stop offset="1" stop-color="#a9a3c2"></stop></linearGradient></defs>
+  <ellipse class="msg-shadow" cx="120" cy="291" rx="68" ry="7"></ellipse>
+  <g class="msg-all">
+    <g class="msg-sparkles msg-opt">
+      <path d="M24.0,54.0L27.5,66.5L40.0,70.0L27.5,73.5L24.0,86.0L20.5,73.5L8.0,70.0L20.5,66.5Z"></path>
+      <path d="M218.0,71.0L220.8,81.2L231.0,84.0L220.8,86.8L218.0,97.0L215.2,86.8L205.0,84.0L215.2,81.2Z"></path>
+      <path d="M212.0,189.0L214.5,197.5L223.0,200.0L214.5,202.5L212.0,211.0L209.5,202.5L201.0,200.0L209.5,197.5Z"></path>
+    </g>
+
+    <g class="msg-pack-g msg-opt"><rect class="msg-pack" x="74" y="190" width="92" height="72" rx="30"></rect></g>
+
+    
+    <g class="msg-foot-l" data-zone="feet">
+      <ellipse class="msg-fur" cx="97" cy="272" rx="21" ry="14"></ellipse>
+      <ellipse class="msg-pad" cx="97" cy="276" rx="8.5" ry="5.5"></ellipse>
+      <circle class="msg-pad" cx="87" cy="268" r="3"></circle>
+      <circle class="msg-pad" cx="97" cy="265.5" r="3"></circle>
+      <circle class="msg-pad" cx="107" cy="268" r="3"></circle>
+      <g class="msg-shoes msg-opt">
+        <path class="msg-boot-top msg-opt msg-shoe-shape" d="M79,244 h36 v22 h-36 z"></path>
+        <path class="msg-shoe-shape" d="M70,274 Q70,250 97,250 Q124,250 124,274 Z"></path>
+        <path class="msg-shoe-sole" d="M68,273 h58 q0,11 -11,11 h-36 q-11,0 -11,-11 z"></path>
+        <path class="msg-shoe-star msg-opt" d="M97.0,255.0L98.8,259.6L103.7,259.8L99.9,262.9L101.1,267.7L97.0,265.0L92.9,267.7L94.1,262.9L90.3,259.8L95.2,259.6Z"></path>
+      </g>
+    </g>
+    
+    <g class="msg-foot-r" data-zone="feet">
+      <ellipse class="msg-fur" cx="143" cy="272" rx="21" ry="14"></ellipse>
+      <ellipse class="msg-pad" cx="143" cy="276" rx="8.5" ry="5.5"></ellipse>
+      <circle class="msg-pad" cx="133" cy="268" r="3"></circle>
+      <circle class="msg-pad" cx="143" cy="265.5" r="3"></circle>
+      <circle class="msg-pad" cx="153" cy="268" r="3"></circle>
+      <g class="msg-shoes msg-opt">
+        <path class="msg-boot-top msg-opt msg-shoe-shape" d="M125,244 h36 v22 h-36 z"></path>
+        <path class="msg-shoe-shape" d="M116,274 Q116,250 143,250 Q170,250 170,274 Z"></path>
+        <path class="msg-shoe-sole" d="M114,273 h58 q0,11 -11,11 h-36 q-11,0 -11,-11 z"></path>
+        <path class="msg-shoe-star msg-opt" d="M143.0,255.0L144.8,259.6L149.7,259.8L145.9,262.9L147.1,267.7L143.0,265.0L138.9,267.7L140.1,262.9L136.3,259.8L141.2,259.6Z"></path>
+      </g>
+    </g>
+
+    <g class="msg-upper">
+      <g class="msg-torso" data-zone="belly">
+        <path class="msg-fur" d="M102,183 C90,186 81,196 77,210 C73,225 66,239 65,252 C64,262 70,267 80,268 L160,268 C170,267 176,262 175,252 C174,239 167,225 163,210 C159,196 150,186 138,183 Q120,190 102,183 Z"></path>
+        <ellipse class="msg-cream" cx="120" cy="236" rx="38" ry="26"></ellipse>
+        <g class="msg-hoodie msg-opt">
+          <path class="msg-hoodie-shape" d="M101,181 C87,184 77,194 73,209 C69,224 62,238 61,252 C60,263 66,269 78,270 Q120,274 162,270 C174,269 180,263 179,252 C178,238 171,224 167,209 C163,194 153,184 139,181 Q120,189 101,181 Z"></path>
+          <path class="msg-hem" d="M61.3,254 C61.5,264 67,269 78,270 Q120,274 162,270 C173,269 178.5,264 178.7,254 Q120,262 61.3,254 Z"></path>
+          <path class="msg-hood msg-opt msg-hood-shape" d="M80,201 C76,188 89,180 105,182 Q120,187 135,182 C151,180 164,188 160,201 C150,194 137,192 120,194 C103,192 90,194 80,201 Z"></path>
+          <g class="msg-stripes msg-opt">
+            <line class="msg-stripe" x1="68" y1="224" x2="172" y2="224"></line>
+            <line class="msg-stripe" x1="66" y1="248" x2="174" y2="248"></line>
+          </g>
+          <path class="msg-pocket msg-opt msg-hoodie-detail" d="M96,240 Q120,234 144,240 L140,260 L100,260 Z"></path>
+          <path class="msg-tee-star msg-opt" d="M120.0,213.0L123.8,222.7L134.3,223.4L126.2,230.0L128.8,240.1L120.0,234.5L111.2,240.1L113.8,230.0L105.7,223.4L116.2,222.7Z"></path>
+          <g class="msg-strings msg-opt">
+            <line class="msg-string" x1="108" y1="182" x2="105" y2="210"></line>
+            <line class="msg-string" x1="132" y1="182" x2="135" y2="210"></line>
+            <circle cx="105" cy="212" r="3.5" fill="#fff"></circle>
+            <circle cx="135" cy="212" r="3.5" fill="#fff"></circle>
+          </g>
+          <g class="msg-g-badge msg-opt">
+            <text class="msg-logo-shadow" x="120" y="242" text-anchor="middle">JOKMÁ</text>
+            <text class="msg-logo" x="120" y="241" text-anchor="middle">JOKMÁ</text>
+          </g>
+        </g>
+        <g class="msg-bottom msg-opt">
+          <path class="msg-bottom-shape" d="M64,236 Q120,256 176,236 L176,250 Q172,272 146,274 L124,274 L120,262 L116,274 L94,274 Q68,272 64,250 Z"></path>
+        </g>
+        <g class="msg-skirt msg-opt">
+          <path class="msg-bottom-shape" d="M66,238 Q120,256 174,238 L186,272 Q120,286 54,272 Z"></path>
+        </g>
+        <g class="msg-overall-straps msg-opt">
+          <path class="msg-bottom-shape" d="M88,240 L84,178 L96,178 L100,240 Z"></path>
+          <path class="msg-bottom-shape" d="M152,240 L156,178 L144,178 L140,240 Z"></path>
+        </g>
+        <g class="msg-straps msg-opt">
+          <path class="msg-strap" d="M100,184 Q92,206 92,232"></path>
+          <path class="msg-strap" d="M140,184 Q148,206 148,232"></path>
+          <path class="msg-pack-badge msg-opt" d="M93.0,207.0L94.8,211.6L99.7,211.8L95.9,214.9L97.1,219.7L93.0,217.0L88.9,219.7L90.1,214.9L86.3,211.8L91.2,211.6Z"></path>
+        </g>
+        <g class="msg-scarf msg-opt">
+          <path d="M70,184 Q120,204 170,184 L172,170 Q120,190 68,170 Z"></path>
+          <path d="M140,190 L156,234 L140,238 L128,194 Z"></path>
+        </g>
+        <g class="msg-bowtie msg-opt">
+          <path d="M120,186 L98,174 Q92,186 98,198 Z"></path>
+          <path d="M120,186 L142,174 Q148,186 142,198 Z"></path>
+          <circle cx="120" cy="186" r="6"></circle>
+        </g>
+        <g class="msg-medal msg-opt">
+          <line x1="100" y1="178" x2="114" y2="214"></line>
+          <line x1="140" y1="178" x2="126" y2="214"></line>
+          <circle cx="120" cy="224" r="15"></circle>
+          <path d="M120.0,217.0L122.1,222.2L127.6,222.5L123.3,226.1L124.7,231.5L120.0,228.5L115.3,231.5L116.7,226.1L112.4,222.5L117.9,222.2Z" fill="#c99a2e"></path>
+        </g>
+      </g>
+
+      <g class="msg-head" data-zone="head">
+        <circle class="msg-fur" cx="53.8" cy="54.7" r="29"></circle>
+        <circle class="msg-fur" cx="186.2" cy="54.7" r="29"></circle>
+        <g class="msg-headphones msg-opt">
+          <path class="band" d="M28,104 Q26,30 120,30 Q214,30 212,104"></path>
+        </g>
+        <path class="msg-fur" d="M120.0,30.0 C126.3,30.0 132.8,30.3 139.0,31.2 C145.2,32.1 151.2,33.4 157.0,35.5 C162.8,37.6 169.0,40.6 174.0,44.0 C179.0,47.4 183.3,51.7 187.0,56.0 C190.7,60.3 193.8,65.3 196.0,70.0 C198.2,74.7 199.6,79.2 200.5,84.0 C201.4,88.8 200.2,92.8 201.4,98.8 C202.6,104.8 206.2,114.3 207.4,120.0 C208.6,125.7 208.5,128.6 208.3,132.9 C208.2,137.2 207.7,141.8 206.5,145.8 C205.3,149.8 202.9,153.7 201.0,156.8 C199.1,159.9 197.6,161.8 195.0,164.2 C192.4,166.6 189.1,169.1 185.3,171.5 C181.5,173.9 178.1,176.5 172.0,178.9 C165.9,181.3 157.7,184.5 149.0,186.2 C140.3,187.9 129.7,189.0 120.0,189.0 C110.3,189.0 99.7,187.9 91.0,186.2 C82.3,184.5 74.0,181.3 68.0,178.9 C62.0,176.5 58.5,173.9 54.7,171.5 C50.9,169.1 47.6,166.6 45.0,164.2 C42.4,161.8 40.9,159.9 39.0,156.8 C37.1,153.7 34.7,149.8 33.5,145.8 C32.3,141.8 31.8,137.2 31.7,132.9 C31.6,128.6 31.5,125.7 32.6,120.0 C33.8,114.3 37.5,104.8 38.6,98.8 C39.8,92.8 38.6,88.8 39.5,84.0 C40.4,79.2 41.8,74.7 44.0,70.0 C46.2,65.3 49.3,60.3 53.0,56.0 C56.7,51.7 61.0,47.4 66.0,44.0 C71.0,40.6 77.2,37.6 83.0,35.5 C88.8,33.4 94.8,32.1 101.0,31.2 C107.2,30.3 113.7,30.0 120.0,30.0 Z"></path>
+        <path class="msg-head-shade" d="M120.0,30.0 C123.2,30.2 132.8,30.3 139.0,31.2 C145.2,32.1 151.2,33.4 157.0,35.5 C162.8,37.6 169.0,40.6 174.0,44.0 C179.0,47.4 183.3,51.7 187.0,56.0 C190.7,60.3 193.8,65.3 196.0,70.0 C198.2,74.7 199.6,79.2 200.5,84.0 C201.4,88.8 200.2,92.8 201.4,98.8 C202.6,104.8 206.2,114.3 207.4,120.0 C208.6,125.7 208.5,128.6 208.3,132.9 C208.2,137.2 207.7,141.8 206.5,145.8 C205.3,149.8 202.9,153.7 201.0,156.8 C199.1,159.9 197.6,161.8 195.0,164.2 C192.4,166.6 189.1,169.1 185.3,171.5 C181.5,173.9 178.1,176.5 172.0,178.9 C165.9,181.3 157.7,184.5 149.0,186.2 C140.3,187.9 124.8,188.5 120.0,189.0 L120,189 Z"></path>
+        <circle class="msg-ear-in" cx="53.3" cy="54.9" r="14.7"></circle>
+        <circle class="msg-ear-in" cx="186.7" cy="54.9" r="14.7"></circle>
+        <g class="msg-headphones msg-opt">
+          <rect x="14" y="84" width="26" height="46" rx="11"></rect>
+          <rect x="200" y="84" width="26" height="46" rx="11"></rect>
+        </g>
+        <g class="msg-spectacles">
+          <path d="M53,112 C51,93 64,81 81,81 C98,81 110,93 110,110 C110,124 104,133 97,140 C92,145 88,150 86,156 C78,151 68,146 62,139 C56,132 54,122 53,112 Z"></path>
+          <path d="M187,112 C189,93 176,81 159,81 C142,81 130,93 130,110 C130,124 136,133 143,140 C148,145 152,150 154,156 C162,151 172,146 178,139 C184,132 186,122 187,112 Z"></path>
+        </g>
+        <path class="msg-cream" data-zone="nose" d="M120,130 C140,130 156,139 156,151 C156,168 141,182 120,182 C99,182 84,168 84,151 C84,139 100,130 120,130 Z"></path>
+        <ellipse class="msg-blush" cx="56" cy="142" rx="12" ry="8.5"></ellipse>
+        <ellipse class="msg-blush" cx="184" cy="142" rx="12" ry="8.5"></ellipse>
+        <path class="msg-brow msg-brow-l" d="M66,66 Q86,55 106,64"></path>
+        <path class="msg-brow msg-brow-r" d="M134,64 Q154,55 174,66"></path>
+        
+    <g class="msg-eye msg-eye-l">
+      <clipPath id="msgEyel"><path d="M62.3,114.8 C62.3,100.6 71.2,93.5 81.8,93.5 C92.4,93.5 101.3,100.6 101.3,114.8 C101.3,123.6 99.5,129.8 92.4,130.7 L71.2,130.7 C64.1,129.8 62.3,123.6 62.3,114.8 Z"></path></clipPath>
+      <path class="msg-eye-white" d="M62.3,114.8 C62.3,100.6 71.2,93.5 81.8,93.5 C92.4,93.5 101.3,100.6 101.3,114.8 C101.3,123.6 99.5,129.8 92.4,130.7 L71.2,130.7 C64.1,129.8 62.3,123.6 62.3,114.8 Z"></path>
+      <g clip-path="url(#msgEyel)">
+        <g class="msg-look">
+          <ellipse class="msg-iris" cx="81.8" cy="118.3" rx="10.2" ry="13.7"></ellipse>
+          <ellipse class="msg-iris-low" cx="80.0" cy="125.4" rx="7.1" ry="5.8"></ellipse>
+          <circle class="msg-shine" cx="76.9" cy="111.2" r="4.6"></circle>
+        </g>
+      </g>
+      <path class="msg-lid" d="M62.3,114.8 C62.3,100.6 71.2,93.5 81.8,93.5 C92.4,93.5 101.3,100.6 101.3,114.8 C101.3,123.6 99.5,129.8 92.4,130.7 L71.2,130.7 C64.1,129.8 62.3,123.6 62.3,114.8 Z"></path>
+    </g>
+        
+    <g class="msg-eye msg-eye-r">
+      <clipPath id="msgEyer"><path d="M138.7,114.8 C138.7,100.6 147.6,93.5 158.2,93.5 C168.8,93.5 177.7,100.6 177.7,114.8 C177.7,123.6 175.9,129.8 168.8,130.7 L147.6,130.7 C140.5,129.8 138.7,123.6 138.7,114.8 Z"></path></clipPath>
+      <path class="msg-eye-white" d="M138.7,114.8 C138.7,100.6 147.6,93.5 158.2,93.5 C168.8,93.5 177.7,100.6 177.7,114.8 C177.7,123.6 175.9,129.8 168.8,130.7 L147.6,130.7 C140.5,129.8 138.7,123.6 138.7,114.8 Z"></path>
+      <g clip-path="url(#msgEyer)">
+        <g class="msg-look">
+          <ellipse class="msg-iris" cx="158.2" cy="118.3" rx="10.2" ry="13.7"></ellipse>
+          <ellipse class="msg-iris-low" cx="156.4" cy="125.4" rx="7.1" ry="5.8"></ellipse>
+          <circle class="msg-shine" cx="153.3" cy="111.2" r="4.6"></circle>
+        </g>
+      </g>
+      <path class="msg-lid" d="M138.7,114.8 C138.7,100.6 147.6,93.5 158.2,93.5 C168.8,93.5 177.7,100.6 177.7,114.8 C177.7,123.6 175.9,129.8 168.8,130.7 L147.6,130.7 C140.5,129.8 138.7,123.6 138.7,114.8 Z"></path>
+    </g>
+        <g class="msg-eyes-happy msg-opt">
+          <path class="msg-line" d="M71,117 Q81.8,103 92.6,117"></path>
+          <path class="msg-line" d="M147.4,117 Q158.2,103 169,117"></path>
+        </g>
+        <g class="msg-eyes-sleep msg-opt">
+          <path class="msg-line" d="M71,111 Q81.8,121 92.6,111"></path>
+          <path class="msg-line" d="M147.4,111 Q158.2,121 169,111"></path>
+        </g>
+        <g class="msg-goldframes">
+          <path class="temple" d="M52.6,108 L39,105"></path>
+          <path class="temple" d="M187.4,108 L201,105"></path>
+          <circle cx="81.8" cy="112.2" r="29.2"></circle>
+          <circle cx="158.2" cy="112.2" r="29.2"></circle>
+          <path class="bridge" d="M111,108 Q120,102 129,108"></path>
+          <path class="glare" d="M97,104 L105,94"></path>
+          <path class="glare thin" d="M100,114 L107,106"></path>
+          <path class="glare" d="M173.4,104 L181.4,94"></path>
+          <path class="glare thin" d="M176.4,114 L183.4,106"></path>
+        </g>
+        <g class="msg-glasses msg-opt">
+          <circle cx="81.8" cy="112.2" r="28.5"></circle>
+          <circle cx="158.2" cy="112.2" r="28.5"></circle>
+          <path d="M110,108 Q120,102 130,108" fill="none"></path>
+        </g>
+        <g data-zone="nose">
+          <path class="msg-nose" d="M110.8,136.5 Q120,132.5 129.2,136.5 Q130,143 120,149.5 Q110,143 110.8,136.5 Z"></path>
+          <ellipse class="msg-nose-shine" cx="116" cy="136.5" rx="3.2" ry="1.8"></ellipse>
+        </g>
+        <g class="msg-mouth-smile">
+          <path class="msg-philtrum" d="M120,148 L120,155.5"></path>
+          <path class="msg-smile-in" d="M99,155 Q120,158 141,155 C142,169 133,179 120,179 C107,179 98,169 99,155 Z"></path>
+          <path class="msg-smile-tongue" d="M105.5,171 C110,166.5 130,166.5 134.5,171 C130.5,177 125.5,179 120,179 C114.5,179 109.5,177 105.5,171 Z"></path>
+        </g>
+        <g class="msg-mouth-open msg-opt">
+          <path class="msg-mouth-in" d="M97,154 Q120,158 143,154 C144,171 134,183 120,183 C106,183 96,171 97,154 Z"></path>
+          <path class="msg-tongue" d="M104,173 C109,168 131,168 136,173 C132,180 126,183 120,183 C114,183 108,180 104,173 Z"></path>
+        </g>
+        <ellipse class="msg-mouth-in msg-mouth-o msg-opt" cx="120" cy="161" rx="8" ry="10"></ellipse>
+        <path class="msg-line msg-mouth-flat msg-opt" d="M107,157 Q113,152 120,157 Q127,162 133,157"></path>
+
+        <g class="msg-hat-grad msg-opt" transform="translate(0 18)">
+          <path class="cap" d="M84,42 Q120,26 156,42 L152,54 Q120,46 88,54 Z"></path>
+          <path class="board" d="M58,32 L120,9 L182,32 L120,52 Z"></path>
+          <path class="tassel" d="M120,30 L172,37 L172,58"></path>
+          <circle cx="172" cy="60" r="4.5"></circle>
+        </g>
+        <g class="msg-hat-party msg-opt" transform="translate(0 18)">
+          <path d="M98,38 L152,32 L138,-16 Z"></path>
+          <circle class="dot" cx="128" cy="20" r="4"></circle>
+          <circle class="dot" cx="138" cy="4" r="3.5"></circle>
+          <circle class="dot" cx="116" cy="30" r="3.5"></circle>
+          <circle class="pom" cx="138" cy="-18" r="8"></circle>
+        </g>
+        <g class="msg-hat-crown msg-opt" transform="translate(0 18)">
+          <path d="M80,42 L86,6 L104,26 L120,0 L136,26 L154,6 L160,42 Q120,32 80,42 Z"></path>
+          <circle cx="120" cy="24" r="5"></circle>
+        </g>
+        <g class="msg-cap msg-opt" transform="translate(0 18)">
+          <path d="M58,60 Q60,12 120,10 Q180,12 182,60 Q120,42 58,60 Z"></path>
+          <path class="visor" d="M110,46 Q168,36 214,56 Q178,70 112,58 Z"></path>
+          <circle cx="120" cy="12" r="5" fill="#a8282c"></circle>
+        </g>
+        <g class="msg-head-bow msg-opt" transform="translate(0 18)">
+          <path d="M184,30 L160,16 Q153,32 160,48 Z"></path>
+          <path d="M184,30 L208,16 Q215,32 208,48 Z"></path>
+          <circle cx="184" cy="31" r="7"></circle>
+        </g>
+        <g class="msg-flower msg-opt" transform="translate(0 18)">
+          <circle cx="58" cy="22" r="9"></circle><circle cx="72" cy="31" r="9"></circle><circle cx="67" cy="47" r="9"></circle>
+          <circle cx="49" cy="47" r="9"></circle><circle cx="44" cy="31" r="9"></circle>
+          <circle class="center" cx="58" cy="35" r="7"></circle>
+        </g>
+      </g>
+      <g class="msg-book msg-opt">
+        <path class="cover" d="M82,210 L120,217 L158,210 L158,252 L120,259 L82,252 Z"></path>
+        <path class="pages" d="M87,213 L120,220 L120,254 L87,248 Z"></path>
+        <path class="pages" d="M153,213 L120,220 L120,254 L153,248 Z"></path>
+      </g>
+
+      <g class="msg-arm-l">
+        <path class="msg-fur" d="M90,199 C84,191 74,188 66,193 C57,201 49,220 45,238 Q59,247 74,240 C77,224 82,210 90,199 Z"></path>
+        <g class="msg-sleeve msg-opt"><path d="M90,199 C84,191 74,188 66,193 C57,201 49,220 45,238 Q59,247 74,240 C77,224 82,210 90,199 Z"></path><path class="msg-crease" d="M85.5,207 C81,217 78,226 76,233"></path><path class="msg-cuff" d="M46.3,232.5 Q60,240.5 75.4,234.5 L74,240 Q59,247 45,238 Z"></path></g>
+        <path class="msg-fur msg-mitt" d="M43,252 C43,244 49.5,238.8 57,238.8 C64.5,238.8 71,244 71,252 C71,259.5 64.5,265.2 57,265.2 C49.5,265.2 43,259.5 43,252 Z"></path>
+        <path class="msg-mitt-shade" d="M43.6,255.8 C45.6,261.6 51,265.2 57,265.2 C63,265.2 68.4,261.6 70.4,255.8 C65,261.2 49,261.2 43.6,255.8 Z"></path>
+        <path class="msg-mitt-line" d="M52.8,256.8 L53.2,261.5 M61.2,256.8 L60.8,261.5"></path>
+        <ellipse class="msg-mitt-hl" cx="51" cy="245" rx="4.4" ry="2.6"></ellipse>
+      </g>
+      <g class="msg-arm-r">
+        <path class="msg-fur" d="M150,199 C156,191 166,188 174,193 C183,201 191,220 195,238 Q181,247 166,240 C163,224 158,210 150,199 Z"></path>
+        <g class="msg-sleeve msg-opt"><path d="M150,199 C156,191 166,188 174,193 C183,201 191,220 195,238 Q181,247 166,240 C163,224 158,210 150,199 Z"></path><path class="msg-crease" d="M154.5,207 C159,217 162,226 164,233"></path><path class="msg-cuff" d="M193.7,232.5 Q180,240.5 164.6,234.5 L166,240 Q181,247 195,238 Z"></path></g>
+        <path class="msg-fur msg-mitt" d="M197,252 C197,244 190.5,238.8 183,238.8 C175.5,238.8 169,244 169,252 C169,259.5 175.5,265.2 183,265.2 C190.5,265.2 197,259.5 197,252 Z"></path>
+        <path class="msg-mitt-shade" d="M196.4,255.8 C194.4,261.6 189,265.2 183,265.2 C177,265.2 171.6,261.6 169.6,255.8 C175,261.2 191,261.2 196.4,255.8 Z"></path>
+        <path class="msg-mitt-line" d="M187.2,256.8 L186.8,261.5 M178.8,256.8 L179.2,261.5"></path>
+        <ellipse class="msg-mitt-hl" cx="189" cy="245" rx="4.4" ry="2.6"></ellipse>
+        <g class="msg-mug msg-opt">
+          <path class="steam" d="M182,206 q-5,-7 0,-14"></path>
+          <path class="steam" d="M192,206 q-5,-7 0,-14"></path>
+          <path class="handle" d="M200,218 q10,0 10,9 q0,9 -10,9"></path>
+          <rect class="cup" x="174" y="210" width="28" height="30" rx="6"></rect>
+          <rect class="coffee" x="177" y="213" width="22" height="5" rx="2"></rect>
+        </g>
+      </g>
+
+    </g>
+
+    <g class="msg-hearts msg-opt">
+      <path class="msg-heart" d="M40,38.1 C25.6,29.1 33.7,18.299999999999997 40,26.4 C46.3,18.299999999999997 54.4,29.1 40,38.1Z"></path>
+      <path class="msg-heart" d="M204,31.9 C186.4,20.9 196.3,7.699999999999999 204,17.6 C211.7,7.699999999999999 221.6,20.9 204,31.9Z"></path>
+      <path class="msg-heart" d="M186,70.3 C174.8,63.3 181.1,54.9 186,61.2 C190.9,54.9 197.2,63.3 186,70.3Z"></path>
+    </g>
+    <g class="msg-zzz msg-opt"><text x="186" y="44">z</text><text x="204" y="20">Z</text></g>
+    <g class="msg-thought msg-opt">
+      <circle cx="196" cy="70" r="5"></circle><circle cx="208" cy="52" r="8"></circle>
+      <circle cx="218" cy="22" r="18"></circle><text x="211" y="30">?</text>
+    </g>
+    <g class="msg-confetti msg-opt">
+      <rect x="30" y="20" width="8" height="5" fill="#7c74ff"></rect>
+      <rect x="70" y="0" width="7" height="5" fill="#22d3aa"></rect>
+      <rect x="160" y="6" width="8" height="5" fill="#ff6fa5"></rect>
+      <rect x="200" y="28" width="7" height="5" fill="#ffcf4d"></rect>
+      <rect x="110" y="-8" width="8" height="5" fill="#4cc9f0"></rect>
+      <rect x="216" y="70" width="7" height="5" fill="#e5484d"></rect>
+    </g>
+  </g>
+</svg></div>
+    </div>
+  </div>
+
+  <section id="pruebalo">
+    <div class="wrap">
+      <div class="kicker reveal">Pruébalo aquí</div>
+      <h2 class="reveal">Elige un apunte y mira lo que hace Jokmá</h2>
+      <p class="sub reveal">Estos resultados los sacó la app de verdad con estos mismos textos. En tu teléfono funciona igual con tus fotos, PDF y apuntes.</p>
+      <div class="picker" id="picker" role="group" aria-label="Apuntes de ejemplo"></div>
+      <div class="demo">
+        <div class="paper" id="paper"><div class="scan"></div><span id="paper-text"></span></div>
+        <div class="panel" id="panel" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="funciones">
+    <div class="wrap">
+      <div class="kicker reveal">Todo en una app</div>
+      <h2 class="reveal">Estudia de muchas formas, no solo leyendo</h2>
+      <p class="sub reveal">Cada apunte que subes se convierte en material para repasar, jugar y practicar para el examen.</p>
+      <div class="grid">
+        <div class="feat reveal"><div class="ic">📷</div><h3>Escanea lo que sea</h3><p>Fotos del cuaderno, del libro o de la pizarra, PDF, Word, Excel y PowerPoint. Lee el texto sin internet.</p></div>
+        <div class="feat reveal"><div class="ic">🐻</div><h3>Taylor te explica</h3><p>Pregúntale lo que no entiendas de tu texto. Responde con lo que dicen tus apuntes, sin inventar.</p></div>
+        <div class="feat reveal"><div class="ic">🗺️</div><h3>Mapas mentales</h3><p>Las ideas principales ordenadas en un mapa que puedes editar, colorear y guardar como imagen o PDF.</p></div>
+        <div class="feat reveal"><div class="ic">📝</div><h3>Modo Examen</h3><p>Sube un examen o crea uno con tus apuntes: Jokmá detecta las preguntas, te califica y te muestra en qué fallaste.</p></div>
+        <div class="feat reveal"><div class="ic">🎮</div><h3>Juegos para repasar</h3><p>Tarjetas, crucigramas, sopa de letras y la Biblioteca Mágica, hechos con las palabras de tu tema.</p></div>
+        <div class="feat reveal"><div class="ic">⏱️</div><h3>Pomodoro con Taylor</h3><p>Bloques de estudio y descansos con música, metas diarias y un repaso de lo que se te olvida.</p></div>
+      </div>
+      <div style="height:22px"></div>
+      <div class="private reveal">
+        <div class="big">🔒</div>
+        <div><h3>Tus apuntes no salen de tu teléfono</h3><p>El escáner, el análisis y Taylor funcionan dentro del teléfono. Tus textos, fotos y notas no se suben a ningún servidor ni a ninguna IA externa.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="planes">
+    <div class="wrap">
+      <div class="kicker reveal">Planes</div>
+      <h2 class="reveal">Empieza gratis. Pásate a Pro cuando quieras.</h2>
+      <p class="sub reveal">Todo lo que haces con lo que ya subiste es gratis y sin límite. Lo que tiene un tope diario es subir cosas nuevas.</p>
+      <div class="plans">
+        <div class="plan reveal">
+          <h3>Gratis</h3>
+          <div class="price">US$0</div>
+          <p class="alt">Para siempre</p>
+          <ul>
+            <li>3 documentos, fotos o PDF al día</li>
+            <li>2 exámenes calificados al día</li>
+            <li>1 mapa mental exportado al día</li>
+            <li>Resúmenes, preguntas, tarjetas, juegos y Taylor sin límite</li>
+            <li>¿Necesitas más? Mira un anuncio y gana más ese día</li>
+          </ul>
+        </div>
+        <div class="plan pro reveal">
+          <span class="tag">7 días gratis</span>
+          <h3>⭐ Jokmá Pro</h3>
+          <div class="price">US$2,99 <small>/ mes</small></div>
+          <p class="alt">o US$14,99 al año (ahorras 58 %)</p>
+          <ul>
+            <li>Documentos, fotos y PDF ilimitados</li>
+            <li>Exámenes y mapas mentales sin límite</li>
+            <li>Sin anuncios</li>
+            <li>Taylor Pro: explica con sus propias palabras, sin internet</li>
+          </ul>
+        </div>
+      </div>
+      <p class="small-print">Precios en dólares de EE. UU.; Google Play muestra el precio de tu país. La suscripción se renueva sola y se cancela cuando quieras en Google Play.</p>
+    </div>
+  </section>
+
+  <section id="preguntas">
+    <div class="wrap">
+      <div class="kicker reveal">Preguntas frecuentes</div>
+      <h2 class="reveal">Lo que suelen preguntar</h2>
+      <details class="reveal"><summary>¿Necesito internet para usar Jokmá?</summary><p>No. El escáner, el análisis, Taylor, los juegos y el Pomodoro funcionan sin internet. Solo hace falta conexión para ver un anuncio voluntario o para comprar Pro.</p></details>
+      <details class="reveal"><summary>¿Qué puedo subir?</summary><p>Fotos (de la cámara o de la galería), PDF, Word, Excel, PowerPoint y texto. También puedes pegar tus apuntes directamente.</p></details>
+      <details class="reveal"><summary>¿Taylor es una inteligencia artificial?</summary><p>Taylor responde con lo que dicen tus apuntes y no inventa datos. Con Jokmá Pro puedes descargar Taylor Pro, un modelo que explica con sus propias palabras dentro del teléfono.</p></details>
+      <details class="reveal"><summary>¿En qué idiomas está?</summary><p>La app está en español e inglés. El análisis de apuntes funciona con textos en español.</p></details>
+      <details class="reveal"><summary>¿Cuándo sale?</summary><p>Muy pronto en Google Play para Android. Si quieres que te avisemos, escríbenos a <a href="mailto:jokmaestudia@gmail.com">jokmaestudia@gmail.com</a>.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Jokmá · <a href="mailto:jokmaestudia@gmail.com">jokmaestudia@gmail.com</a></span>
+    <nav aria-label="Legal"><a href="terminos.html">Términos</a><a href="privacidad.html">Privacidad</a><a href="licencias.html">Licencias</a></nav>
+  </div>
+</footer>
+
+<div class="guide hide" id="guide">
+  <div class="bubble" id="guide-bubble"><button class="x" id="guide-x" aria-label="Ocultar el mensaje">×</button><span id="guide-text"></span></div>
+  <div class="taylor" id="guide-taylor" title="Tócame"><svg class="mascot-svg mascot-interactive  pose-normal equip-top_default wear-hoodie equip-bottom_default equip-shoes_default equip-acc_none equip-backpack_none fur-anteojos" viewBox="0 0 240 300" xmlns="http://www.w3.org/2000/svg" aria-label="Taylor, el oso de Jokmá" role="img">
+  <defs><linearGradient id="msgSilver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e4e1ef"></stop><stop offset="1" stop-color="#a9a3c2"></stop></linearGradient></defs>
+  <ellipse class="msg-shadow" cx="120" cy="291" rx="68" ry="7"></ellipse>
+  <g class="msg-all">
+    <g class="msg-sparkles msg-opt">
+      <path d="M24.0,54.0L27.5,66.5L40.0,70.0L27.5,73.5L24.0,86.0L20.5,73.5L8.0,70.0L20.5,66.5Z"></path>
+      <path d="M218.0,71.0L220.8,81.2L231.0,84.0L220.8,86.8L218.0,97.0L215.2,86.8L205.0,84.0L215.2,81.2Z"></path>
+      <path d="M212.0,189.0L214.5,197.5L223.0,200.0L214.5,202.5L212.0,211.0L209.5,202.5L201.0,200.0L209.5,197.5Z"></path>
+    </g>
+
+    <g class="msg-pack-g msg-opt"><rect class="msg-pack" x="74" y="190" width="92" height="72" rx="30"></rect></g>
+
+    
+    <g class="msg-foot-l" data-zone="feet">
+      <ellipse class="msg-fur" cx="97" cy="272" rx="21" ry="14"></ellipse>
+      <ellipse class="msg-pad" cx="97" cy="276" rx="8.5" ry="5.5"></ellipse>
+      <circle class="msg-pad" cx="87" cy="268" r="3"></circle>
+      <circle class="msg-pad" cx="97" cy="265.5" r="3"></circle>
+      <circle class="msg-pad" cx="107" cy="268" r="3"></circle>
+      <g class="msg-shoes msg-opt">
+        <path class="msg-boot-top msg-opt msg-shoe-shape" d="M79,244 h36 v22 h-36 z"></path>
+        <path class="msg-shoe-shape" d="M70,274 Q70,250 97,250 Q124,250 124,274 Z"></path>
+        <path class="msg-shoe-sole" d="M68,273 h58 q0,11 -11,11 h-36 q-11,0 -11,-11 z"></path>
+        <path class="msg-shoe-star msg-opt" d="M97.0,255.0L98.8,259.6L103.7,259.8L99.9,262.9L101.1,267.7L97.0,265.0L92.9,267.7L94.1,262.9L90.3,259.8L95.2,259.6Z"></path>
+      </g>
+    </g>
+    
+    <g class="msg-foot-r" data-zone="feet">
+      <ellipse class="msg-fur" cx="143" cy="272" rx="21" ry="14"></ellipse>
+      <ellipse class="msg-pad" cx="143" cy="276" rx="8.5" ry="5.5"></ellipse>
+      <circle class="msg-pad" cx="133" cy="268" r="3"></circle>
+      <circle class="msg-pad" cx="143" cy="265.5" r="3"></circle>
+      <circle class="msg-pad" cx="153" cy="268" r="3"></circle>
+      <g class="msg-shoes msg-opt">
+        <path class="msg-boot-top msg-opt msg-shoe-shape" d="M125,244 h36 v22 h-36 z"></path>
+        <path class="msg-shoe-shape" d="M116,274 Q116,250 143,250 Q170,250 170,274 Z"></path>
+        <path class="msg-shoe-sole" d="M114,273 h58 q0,11 -11,11 h-36 q-11,0 -11,-11 z"></path>
+        <path class="msg-shoe-star msg-opt" d="M143.0,255.0L144.8,259.6L149.7,259.8L145.9,262.9L147.1,267.7L143.0,265.0L138.9,267.7L140.1,262.9L136.3,259.8L141.2,259.6Z"></path>
+      </g>
+    </g>
+
+    <g class="msg-upper">
+      <g class="msg-torso" data-zone="belly">
+        <path class="msg-fur" d="M102,183 C90,186 81,196 77,210 C73,225 66,239 65,252 C64,262 70,267 80,268 L160,268 C170,267 176,262 175,252 C174,239 167,225 163,210 C159,196 150,186 138,183 Q120,190 102,183 Z"></path>
+        <ellipse class="msg-cream" cx="120" cy="236" rx="38" ry="26"></ellipse>
+        <g class="msg-hoodie msg-opt">
+          <path class="msg-hoodie-shape" d="M101,181 C87,184 77,194 73,209 C69,224 62,238 61,252 C60,263 66,269 78,270 Q120,274 162,270 C174,269 180,263 179,252 C178,238 171,224 167,209 C163,194 153,184 139,181 Q120,189 101,181 Z"></path>
+          <path class="msg-hem" d="M61.3,254 C61.5,264 67,269 78,270 Q120,274 162,270 C173,269 178.5,264 178.7,254 Q120,262 61.3,254 Z"></path>
+          <path class="msg-hood msg-opt msg-hood-shape" d="M80,201 C76,188 89,180 105,182 Q120,187 135,182 C151,180 164,188 160,201 C150,194 137,192 120,194 C103,192 90,194 80,201 Z"></path>
+          <g class="msg-stripes msg-opt">
+            <line class="msg-stripe" x1="68" y1="224" x2="172" y2="224"></line>
+            <line class="msg-stripe" x1="66" y1="248" x2="174" y2="248"></line>
+          </g>
+          <path class="msg-pocket msg-opt msg-hoodie-detail" d="M96,240 Q120,234 144,240 L140,260 L100,260 Z"></path>
+          <path class="msg-tee-star msg-opt" d="M120.0,213.0L123.8,222.7L134.3,223.4L126.2,230.0L128.8,240.1L120.0,234.5L111.2,240.1L113.8,230.0L105.7,223.4L116.2,222.7Z"></path>
+          <g class="msg-strings msg-opt">
+            <line class="msg-string" x1="108" y1="182" x2="105" y2="210"></line>
+            <line class="msg-string" x1="132" y1="182" x2="135" y2="210"></line>
+            <circle cx="105" cy="212" r="3.5" fill="#fff"></circle>
+            <circle cx="135" cy="212" r="3.5" fill="#fff"></circle>
+          </g>
+          <g class="msg-g-badge msg-opt">
+            <text class="msg-logo-shadow" x="120" y="242" text-anchor="middle">JOKMÁ</text>
+            <text class="msg-logo" x="120" y="241" text-anchor="middle">JOKMÁ</text>
+          </g>
+        </g>
+        <g class="msg-bottom msg-opt">
+          <path class="msg-bottom-shape" d="M64,236 Q120,256 176,236 L176,250 Q172,272 146,274 L124,274 L120,262 L116,274 L94,274 Q68,272 64,250 Z"></path>
+        </g>
+        <g class="msg-skirt msg-opt">
+          <path class="msg-bottom-shape" d="M66,238 Q120,256 174,238 L186,272 Q120,286 54,272 Z"></path>
+        </g>
+        <g class="msg-overall-straps msg-opt">
+          <path class="msg-bottom-shape" d="M88,240 L84,178 L96,178 L100,240 Z"></path>
+          <path class="msg-bottom-shape" d="M152,240 L156,178 L144,178 L140,240 Z"></path>
+        </g>
+        <g class="msg-straps msg-opt">
+          <path class="msg-strap" d="M100,184 Q92,206 92,232"></path>
+          <path class="msg-strap" d="M140,184 Q148,206 148,232"></path>
+          <path class="msg-pack-badge msg-opt" d="M93.0,207.0L94.8,211.6L99.7,211.8L95.9,214.9L97.1,219.7L93.0,217.0L88.9,219.7L90.1,214.9L86.3,211.8L91.2,211.6Z"></path>
+        </g>
+        <g class="msg-scarf msg-opt">
+          <path d="M70,184 Q120,204 170,184 L172,170 Q120,190 68,170 Z"></path>
+          <path d="M140,190 L156,234 L140,238 L128,194 Z"></path>
+        </g>
+        <g class="msg-bowtie msg-opt">
+          <path d="M120,186 L98,174 Q92,186 98,198 Z"></path>
+          <path d="M120,186 L142,174 Q148,186 142,198 Z"></path>
+          <circle cx="120" cy="186" r="6"></circle>
+        </g>
+        <g class="msg-medal msg-opt">
+          <line x1="100" y1="178" x2="114" y2="214"></line>
+          <line x1="140" y1="178" x2="126" y2="214"></line>
+          <circle cx="120" cy="224" r="15"></circle>
+          <path d="M120.0,217.0L122.1,222.2L127.6,222.5L123.3,226.1L124.7,231.5L120.0,228.5L115.3,231.5L116.7,226.1L112.4,222.5L117.9,222.2Z" fill="#c99a2e"></path>
+        </g>
+      </g>
+
+      <g class="msg-head" data-zone="head">
+        <circle class="msg-fur" cx="53.8" cy="54.7" r="29"></circle>
+        <circle class="msg-fur" cx="186.2" cy="54.7" r="29"></circle>
+        <g class="msg-headphones msg-opt">
+          <path class="band" d="M28,104 Q26,30 120,30 Q214,30 212,104"></path>
+        </g>
+        <path class="msg-fur" d="M120.0,30.0 C126.3,30.0 132.8,30.3 139.0,31.2 C145.2,32.1 151.2,33.4 157.0,35.5 C162.8,37.6 169.0,40.6 174.0,44.0 C179.0,47.4 183.3,51.7 187.0,56.0 C190.7,60.3 193.8,65.3 196.0,70.0 C198.2,74.7 199.6,79.2 200.5,84.0 C201.4,88.8 200.2,92.8 201.4,98.8 C202.6,104.8 206.2,114.3 207.4,120.0 C208.6,125.7 208.5,128.6 208.3,132.9 C208.2,137.2 207.7,141.8 206.5,145.8 C205.3,149.8 202.9,153.7 201.0,156.8 C199.1,159.9 197.6,161.8 195.0,164.2 C192.4,166.6 189.1,169.1 185.3,171.5 C181.5,173.9 178.1,176.5 172.0,178.9 C165.9,181.3 157.7,184.5 149.0,186.2 C140.3,187.9 129.7,189.0 120.0,189.0 C110.3,189.0 99.7,187.9 91.0,186.2 C82.3,184.5 74.0,181.3 68.0,178.9 C62.0,176.5 58.5,173.9 54.7,171.5 C50.9,169.1 47.6,166.6 45.0,164.2 C42.4,161.8 40.9,159.9 39.0,156.8 C37.1,153.7 34.7,149.8 33.5,145.8 C32.3,141.8 31.8,137.2 31.7,132.9 C31.6,128.6 31.5,125.7 32.6,120.0 C33.8,114.3 37.5,104.8 38.6,98.8 C39.8,92.8 38.6,88.8 39.5,84.0 C40.4,79.2 41.8,74.7 44.0,70.0 C46.2,65.3 49.3,60.3 53.0,56.0 C56.7,51.7 61.0,47.4 66.0,44.0 C71.0,40.6 77.2,37.6 83.0,35.5 C88.8,33.4 94.8,32.1 101.0,31.2 C107.2,30.3 113.7,30.0 120.0,30.0 Z"></path>
+        <path class="msg-head-shade" d="M120.0,30.0 C123.2,30.2 132.8,30.3 139.0,31.2 C145.2,32.1 151.2,33.4 157.0,35.5 C162.8,37.6 169.0,40.6 174.0,44.0 C179.0,47.4 183.3,51.7 187.0,56.0 C190.7,60.3 193.8,65.3 196.0,70.0 C198.2,74.7 199.6,79.2 200.5,84.0 C201.4,88.8 200.2,92.8 201.4,98.8 C202.6,104.8 206.2,114.3 207.4,120.0 C208.6,125.7 208.5,128.6 208.3,132.9 C208.2,137.2 207.7,141.8 206.5,145.8 C205.3,149.8 202.9,153.7 201.0,156.8 C199.1,159.9 197.6,161.8 195.0,164.2 C192.4,166.6 189.1,169.1 185.3,171.5 C181.5,173.9 178.1,176.5 172.0,178.9 C165.9,181.3 157.7,184.5 149.0,186.2 C140.3,187.9 124.8,188.5 120.0,189.0 L120,189 Z"></path>
+        <circle class="msg-ear-in" cx="53.3" cy="54.9" r="14.7"></circle>
+        <circle class="msg-ear-in" cx="186.7" cy="54.9" r="14.7"></circle>
+        <g class="msg-headphones msg-opt">
+          <rect x="14" y="84" width="26" height="46" rx="11"></rect>
+          <rect x="200" y="84" width="26" height="46" rx="11"></rect>
+        </g>
+        <g class="msg-spectacles">
+          <path d="M53,112 C51,93 64,81 81,81 C98,81 110,93 110,110 C110,124 104,133 97,140 C92,145 88,150 86,156 C78,151 68,146 62,139 C56,132 54,122 53,112 Z"></path>
+          <path d="M187,112 C189,93 176,81 159,81 C142,81 130,93 130,110 C130,124 136,133 143,140 C148,145 152,150 154,156 C162,151 172,146 178,139 C184,132 186,122 187,112 Z"></path>
+        </g>
+        <path class="msg-cream" data-zone="nose" d="M120,130 C140,130 156,139 156,151 C156,168 141,182 120,182 C99,182 84,168 84,151 C84,139 100,130 120,130 Z"></path>
+        <ellipse class="msg-blush" cx="56" cy="142" rx="12" ry="8.5"></ellipse>
+        <ellipse class="msg-blush" cx="184" cy="142" rx="12" ry="8.5"></ellipse>
+        <path class="msg-brow msg-brow-l" d="M66,66 Q86,55 106,64"></path>
+        <path class="msg-brow msg-brow-r" d="M134,64 Q154,55 174,66"></path>
+        
+    <g class="msg-eye msg-eye-l">
+      <clipPath id="msgEyel"><path d="M62.3,114.8 C62.3,100.6 71.2,93.5 81.8,93.5 C92.4,93.5 101.3,100.6 101.3,114.8 C101.3,123.6 99.5,129.8 92.4,130.7 L71.2,130.7 C64.1,129.8 62.3,123.6 62.3,114.8 Z"></path></clipPath>
+      <path class="msg-eye-white" d="M62.3,114.8 C62.3,100.6 71.2,93.5 81.8,93.5 C92.4,93.5 101.3,100.6 101.3,114.8 C101.3,123.6 99.5,129.8 92.4,130.7 L71.2,130.7 C64.1,129.8 62.3,123.6 62.3,114.8 Z"></path>
+      <g clip-path="url(#msgEyel)">
+        <g class="msg-look">
+          <ellipse class="msg-iris" cx="81.8" cy="118.3" rx="10.2" ry="13.7"></ellipse>
+          <ellipse class="msg-iris-low" cx="80.0" cy="125.4" rx="7.1" ry="5.8"></ellipse>
+          <circle class="msg-shine" cx="76.9" cy="111.2" r="4.6"></circle>
+        </g>
+      </g>
+      <path class="msg-lid" d="M62.3,114.8 C62.3,100.6 71.2,93.5 81.8,93.5 C92.4,93.5 101.3,100.6 101.3,114.8 C101.3,123.6 99.5,129.8 92.4,130.7 L71.2,130.7 C64.1,129.8 62.3,123.6 62.3,114.8 Z"></path>
+    </g>
+        
+    <g class="msg-eye msg-eye-r">
+      <clipPath id="msgEyer"><path d="M138.7,114.8 C138.7,100.6 147.6,93.5 158.2,93.5 C168.8,93.5 177.7,100.6 177.7,114.8 C177.7,123.6 175.9,129.8 168.8,130.7 L147.6,130.7 C140.5,129.8 138.7,123.6 138.7,114.8 Z"></path></clipPath>
+      <path class="msg-eye-white" d="M138.7,114.8 C138.7,100.6 147.6,93.5 158.2,93.5 C168.8,93.5 177.7,100.6 177.7,114.8 C177.7,123.6 175.9,129.8 168.8,130.7 L147.6,130.7 C140.5,129.8 138.7,123.6 138.7,114.8 Z"></path>
+      <g clip-path="url(#msgEyer)">
+        <g class="msg-look">
+          <ellipse class="msg-iris" cx="158.2" cy="118.3" rx="10.2" ry="13.7"></ellipse>
+          <ellipse class="msg-iris-low" cx="156.4" cy="125.4" rx="7.1" ry="5.8"></ellipse>
+          <circle class="msg-shine" cx="153.3" cy="111.2" r="4.6"></circle>
+        </g>
+      </g>
+      <path class="msg-lid" d="M138.7,114.8 C138.7,100.6 147.6,93.5 158.2,93.5 C168.8,93.5 177.7,100.6 177.7,114.8 C177.7,123.6 175.9,129.8 168.8,130.7 L147.6,130.7 C140.5,129.8 138.7,123.6 138.7,114.8 Z"></path>
+    </g>
+        <g class="msg-eyes-happy msg-opt">
+          <path class="msg-line" d="M71,117 Q81.8,103 92.6,117"></path>
+          <path class="msg-line" d="M147.4,117 Q158.2,103 169,117"></path>
+        </g>
+        <g class="msg-eyes-sleep msg-opt">
+          <path class="msg-line" d="M71,111 Q81.8,121 92.6,111"></path>
+          <path class="msg-line" d="M147.4,111 Q158.2,121 169,111"></path>
+        </g>
+        <g class="msg-goldframes">
+          <path class="temple" d="M52.6,108 L39,105"></path>
+          <path class="temple" d="M187.4,108 L201,105"></path>
+          <circle cx="81.8" cy="112.2" r="29.2"></circle>
+          <circle cx="158.2" cy="112.2" r="29.2"></circle>
+          <path class="bridge" d="M111,108 Q120,102 129,108"></path>
+          <path class="glare" d="M97,104 L105,94"></path>
+          <path class="glare thin" d="M100,114 L107,106"></path>
+          <path class="glare" d="M173.4,104 L181.4,94"></path>
+          <path class="glare thin" d="M176.4,114 L183.4,106"></path>
+        </g>
+        <g class="msg-glasses msg-opt">
+          <circle cx="81.8" cy="112.2" r="28.5"></circle>
+          <circle cx="158.2" cy="112.2" r="28.5"></circle>
+          <path d="M110,108 Q120,102 130,108" fill="none"></path>
+        </g>
+        <g data-zone="nose">
+          <path class="msg-nose" d="M110.8,136.5 Q120,132.5 129.2,136.5 Q130,143 120,149.5 Q110,143 110.8,136.5 Z"></path>
+          <ellipse class="msg-nose-shine" cx="116" cy="136.5" rx="3.2" ry="1.8"></ellipse>
+        </g>
+        <g class="msg-mouth-smile">
+          <path class="msg-philtrum" d="M120,148 L120,155.5"></path>
+          <path class="msg-smile-in" d="M99,155 Q120,158 141,155 C142,169 133,179 120,179 C107,179 98,169 99,155 Z"></path>
+          <path class="msg-smile-tongue" d="M105.5,171 C110,166.5 130,166.5 134.5,171 C130.5,177 125.5,179 120,179 C114.5,179 109.5,177 105.5,171 Z"></path>
+        </g>
+        <g class="msg-mouth-open msg-opt">
+          <path class="msg-mouth-in" d="M97,154 Q120,158 143,154 C144,171 134,183 120,183 C106,183 96,171 97,154 Z"></path>
+          <path class="msg-tongue" d="M104,173 C109,168 131,168 136,173 C132,180 126,183 120,183 C114,183 108,180 104,173 Z"></path>
+        </g>
+        <ellipse class="msg-mouth-in msg-mouth-o msg-opt" cx="120" cy="161" rx="8" ry="10"></ellipse>
+        <path class="msg-line msg-mouth-flat msg-opt" d="M107,157 Q113,152 120,157 Q127,162 133,157"></path>
+
+        <g class="msg-hat-grad msg-opt" transform="translate(0 18)">
+          <path class="cap" d="M84,42 Q120,26 156,42 L152,54 Q120,46 88,54 Z"></path>
+          <path class="board" d="M58,32 L120,9 L182,32 L120,52 Z"></path>
+          <path class="tassel" d="M120,30 L172,37 L172,58"></path>
+          <circle cx="172" cy="60" r="4.5"></circle>
+        </g>
+        <g class="msg-hat-party msg-opt" transform="translate(0 18)">
+          <path d="M98,38 L152,32 L138,-16 Z"></path>
+          <circle class="dot" cx="128" cy="20" r="4"></circle>
+          <circle class="dot" cx="138" cy="4" r="3.5"></circle>
+          <circle class="dot" cx="116" cy="30" r="3.5"></circle>
+          <circle class="pom" cx="138" cy="-18" r="8"></circle>
+        </g>
+        <g class="msg-hat-crown msg-opt" transform="translate(0 18)">
+          <path d="M80,42 L86,6 L104,26 L120,0 L136,26 L154,6 L160,42 Q120,32 80,42 Z"></path>
+          <circle cx="120" cy="24" r="5"></circle>
+        </g>
+        <g class="msg-cap msg-opt" transform="translate(0 18)">
+          <path d="M58,60 Q60,12 120,10 Q180,12 182,60 Q120,42 58,60 Z"></path>
+          <path class="visor" d="M110,46 Q168,36 214,56 Q178,70 112,58 Z"></path>
+          <circle cx="120" cy="12" r="5" fill="#a8282c"></circle>
+        </g>
+        <g class="msg-head-bow msg-opt" transform="translate(0 18)">
+          <path d="M184,30 L160,16 Q153,32 160,48 Z"></path>
+          <path d="M184,30 L208,16 Q215,32 208,48 Z"></path>
+          <circle cx="184" cy="31" r="7"></circle>
+        </g>
+        <g class="msg-flower msg-opt" transform="translate(0 18)">
+          <circle cx="58" cy="22" r="9"></circle><circle cx="72" cy="31" r="9"></circle><circle cx="67" cy="47" r="9"></circle>
+          <circle cx="49" cy="47" r="9"></circle><circle cx="44" cy="31" r="9"></circle>
+          <circle class="center" cx="58" cy="35" r="7"></circle>
+        </g>
+      </g>
+      <g class="msg-book msg-opt">
+        <path class="cover" d="M82,210 L120,217 L158,210 L158,252 L120,259 L82,252 Z"></path>
+        <path class="pages" d="M87,213 L120,220 L120,254 L87,248 Z"></path>
+        <path class="pages" d="M153,213 L120,220 L120,254 L153,248 Z"></path>
+      </g>
+
+      <g class="msg-arm-l">
+        <path class="msg-fur" d="M90,199 C84,191 74,188 66,193 C57,201 49,220 45,238 Q59,247 74,240 C77,224 82,210 90,199 Z"></path>
+        <g class="msg-sleeve msg-opt"><path d="M90,199 C84,191 74,188 66,193 C57,201 49,220 45,238 Q59,247 74,240 C77,224 82,210 90,199 Z"></path><path class="msg-crease" d="M85.5,207 C81,217 78,226 76,233"></path><path class="msg-cuff" d="M46.3,232.5 Q60,240.5 75.4,234.5 L74,240 Q59,247 45,238 Z"></path></g>
+        <path class="msg-fur msg-mitt" d="M43,252 C43,244 49.5,238.8 57,238.8 C64.5,238.8 71,244 71,252 C71,259.5 64.5,265.2 57,265.2 C49.5,265.2 43,259.5 43,252 Z"></path>
+        <path class="msg-mitt-shade" d="M43.6,255.8 C45.6,261.6 51,265.2 57,265.2 C63,265.2 68.4,261.6 70.4,255.8 C65,261.2 49,261.2 43.6,255.8 Z"></path>
+        <path class="msg-mitt-line" d="M52.8,256.8 L53.2,261.5 M61.2,256.8 L60.8,261.5"></path>
+        <ellipse class="msg-mitt-hl" cx="51" cy="245" rx="4.4" ry="2.6"></ellipse>
+      </g>
+      <g class="msg-arm-r">
+        <path class="msg-fur" d="M150,199 C156,191 166,188 174,193 C183,201 191,220 195,238 Q181,247 166,240 C163,224 158,210 150,199 Z"></path>
+        <g class="msg-sleeve msg-opt"><path d="M150,199 C156,191 166,188 174,193 C183,201 191,220 195,238 Q181,247 166,240 C163,224 158,210 150,199 Z"></path><path class="msg-crease" d="M154.5,207 C159,217 162,226 164,233"></path><path class="msg-cuff" d="M193.7,232.5 Q180,240.5 164.6,234.5 L166,240 Q181,247 195,238 Z"></path></g>
+        <path class="msg-fur msg-mitt" d="M197,252 C197,244 190.5,238.8 183,238.8 C175.5,238.8 169,244 169,252 C169,259.5 175.5,265.2 183,265.2 C190.5,265.2 197,259.5 197,252 Z"></path>
+        <path class="msg-mitt-shade" d="M196.4,255.8 C194.4,261.6 189,265.2 183,265.2 C177,265.2 171.6,261.6 169.6,255.8 C175,261.2 191,261.2 196.4,255.8 Z"></path>
+        <path class="msg-mitt-line" d="M187.2,256.8 L186.8,261.5 M178.8,256.8 L179.2,261.5"></path>
+        <ellipse class="msg-mitt-hl" cx="189" cy="245" rx="4.4" ry="2.6"></ellipse>
+        <g class="msg-mug msg-opt">
+          <path class="steam" d="M182,206 q-5,-7 0,-14"></path>
+          <path class="steam" d="M192,206 q-5,-7 0,-14"></path>
+          <path class="handle" d="M200,218 q10,0 10,9 q0,9 -10,9"></path>
+          <rect class="cup" x="174" y="210" width="28" height="30" rx="6"></rect>
+          <rect class="coffee" x="177" y="213" width="22" height="5" rx="2"></rect>
+        </g>
+      </g>
+
+    </g>
+
+    <g class="msg-hearts msg-opt">
+      <path class="msg-heart" d="M40,38.1 C25.6,29.1 33.7,18.299999999999997 40,26.4 C46.3,18.299999999999997 54.4,29.1 40,38.1Z"></path>
+      <path class="msg-heart" d="M204,31.9 C186.4,20.9 196.3,7.699999999999999 204,17.6 C211.7,7.699999999999999 221.6,20.9 204,31.9Z"></path>
+      <path class="msg-heart" d="M186,70.3 C174.8,63.3 181.1,54.9 186,61.2 C190.9,54.9 197.2,63.3 186,70.3Z"></path>
+    </g>
+    <g class="msg-zzz msg-opt"><text x="186" y="44">z</text><text x="204" y="20">Z</text></g>
+    <g class="msg-thought msg-opt">
+      <circle cx="196" cy="70" r="5"></circle><circle cx="208" cy="52" r="8"></circle>
+      <circle cx="218" cy="22" r="18"></circle><text x="211" y="30">?</text>
+    </g>
+    <g class="msg-confetti msg-opt">
+      <rect x="30" y="20" width="8" height="5" fill="#7c74ff"></rect>
+      <rect x="70" y="0" width="7" height="5" fill="#22d3aa"></rect>
+      <rect x="160" y="6" width="8" height="5" fill="#ff6fa5"></rect>
+      <rect x="200" y="28" width="7" height="5" fill="#ffcf4d"></rect>
+      <rect x="110" y="-8" width="8" height="5" fill="#4cc9f0"></rect>
+      <rect x="216" y="70" width="7" height="5" fill="#e5484d"></rect>
+    </g>
+  </g>
+</svg></div>
+</div>
+
+<script>
+const DEMO = [{"id": "celula", "icon": "🧬", "tema": "Biología", "title": "La célula", "text": "LA CÉLULA\n\nLa célula es la unidad básica de la vida. Todos los seres vivos están formados por una o por muchas células.\n\nPartes de la célula\nLa membrana celular es la capa que rodea la célula y controla qué sustancias entran y salen.\nEl citoplasma es el líquido donde flotan los orgánulos.\nEl núcleo guarda el material genético y dirige las funciones de la célula.\n\nTipos de células\nLas células procariotas no tienen núcleo definido, como las bacterias.\nLas células eucariotas tienen un núcleo protegido por una membrana, como las de los animales y las plantas.\n\nLas mitocondrias producen la energía que la célula necesita. Los cloroplastos, que solo tienen las células vegetales, realizan la fotosíntesis.", "keywords": ["CÉLULA", "MEMBRANA CELULAR", "CITOPLASMA", "NÚCLEO", "CÉLULAS EUCARIOTAS", "MITOCONDRIAS", "CÉLULAS PROCARIOTAS", "MATERIAL GENÉTICO"], "summary": [{"label": "Qué es", "text": "La célula es la unidad básica de la vida. La membrana celular es la capa que rodea la célula y controla qué sustancias entran y salen. El citoplasma es el líquido donde flotan los orgánulos."}, {"label": "Características", "text": "Las células eucariotas tienen un núcleo protegido por una membrana, como las de los animales y las plantas."}, {"label": "Funciones", "text": "El núcleo guarda el material genético y dirige las funciones de la célula."}, {"label": "Productos", "text": "Las mitocondrias producen la energía que la célula necesita."}, {"label": "Ejemplos", "text": "Las células procariotas no tienen núcleo definido, como las bacterias."}], "questions": [{"q": "¿Qué es la célula?", "a": "La unidad básica de la vida."}, {"q": "¿Qué es la membrana celular?", "a": "La capa que rodea la célula y controla qué sustancias entran y salen."}, {"q": "¿Qué es el citoplasma?", "a": "El líquido donde flotan los orgánulos."}, {"q": "¿Qué guarda el núcleo?", "a": "El material genético."}, {"q": "¿Qué dirige el núcleo?", "a": "Las funciones de la célula."}, {"q": "¿Qué ejemplos de células procariotas se mencionan?", "a": "Las bacterias."}], "cards": [{"q": "¿Qué es la célula?", "a": "La unidad básica de la vida."}, {"q": "¿Qué es la membrana celular?", "a": "La capa que rodea la célula y controla qué sustancias entran y salen."}, {"q": "¿Qué es el citoplasma?", "a": "El líquido donde flotan los orgánulos."}, {"q": "¿Qué guarda el núcleo?", "a": "El material genético."}, {"q": "¿Qué dirige el núcleo?", "a": "Las funciones de la célula."}, {"q": "¿Qué ejemplos de células procariotas se mencionan?", "a": "Las bacterias."}], "map": {"t": "La célula", "c": [{"t": "¿Qué es?", "c": [{"t": "Célula: la unidad básica de la vida", "c": []}]}, {"t": "Partes de la célula", "c": [{"t": "Membrana celular: la capa que rodea la célula…", "c": []}, {"t": "Citoplasma: el líquido donde flotan los…", "c": []}, {"t": "Núcleo", "c": []}]}, {"t": "Tipos de células", "c": [{"t": "Ejemplos de las células procariotas: las…", "c": []}, {"t": "Células eucariotas", "c": []}, {"t": "Mitocondrias: producen la energía que la…", "c": []}]}]}, "chat": [{"q": "¿Qué es la célula?", "a": "La célula es la unidad básica de la vida.\nTambién deberías saber:\n• La membrana celular es la capa que rodea la célula y controla qué sustancias entran y salen.\n• Las células procariotas no tienen núcleo definido, como las bacterias.\n• Las células eucariotas tienen un núcleo protegido por una membrana, como las de los animales y las plantas.\n• El núcleo guarda el material genético y dirige las funciones de la célula.", "src": ""}, {"q": "¿Qué hace el núcleo?", "a": "Sobre el núcleo, tu texto dice:\n• El núcleo guarda el material genético y dirige las funciones de la célula.\n• Las células procariotas no tienen núcleo definido, como las bacterias.\n• Las células eucariotas tienen un núcleo protegido por una membrana, como las de los animales y las plantas.", "src": ""}, {"q": "¿Qué diferencia hay entre procariotas y eucariotas?", "a": "Te lo pongo lado a lado 👇\n• Procariotas: Las células procariotas no tienen núcleo definido, como las bacterias.\n• Eucariotas: Las células eucariotas tienen un núcleo protegido por una membrana, como las de los animales y las plantas.", "src": ""}]}, {"id": "ciclo-agua", "icon": "💧", "tema": "Ciencias naturales", "title": "El ciclo del agua", "text": "EL CICLO DEL AGUA\n\nEl ciclo del agua es el recorrido que hace el agua en la Tierra, pasando por distintos estados.\n\nEVAPORACIÓN\nEl calor del Sol calienta el agua de los mares, ríos y lagos, que se convierte en vapor y sube a la atmósfera.\n\nCONDENSACIÓN\nEl vapor de agua se enfría en las capas altas de la atmósfera y forma pequeñas gotas que se agrupan en nubes.\n\nPRECIPITACIÓN\nCuando las gotas pesan demasiado, caen a la Tierra en forma de lluvia, nieve o granizo.\n\nESCORRENTÍA\nEl agua que cae corre por la superficie y vuelve a los ríos y mares, donde el ciclo comienza otra vez.", "keywords": ["CICLO DEL AGUA", "ESCORRENTÍA", "EVAPORACIÓN", "CONDENSACIÓN", "PRECIPITACIÓN", "TIERRA", "MARES", "RÍOS"], "summary": [{"label": "Qué es", "text": "El ciclo del agua es el recorrido que hace el agua en la Tierra, pasando por distintos estados. Escorrentía: El agua que cae corre por la superficie y vuelve a los ríos y mares, donde el ciclo comienza otra vez."}, {"label": "Procesos", "text": "Evaporación: El calor del Sol calienta el agua de los mares, ríos y lagos, que se convierte en vapor y sube a la atmósfera. Condensación: El vapor de agua se enfría en las capas altas de la atmósfera y forma pequeñas gotas que se agrupan en nubes."}, {"label": "Otros datos", "text": "Precipitación: Cuando las gotas pesan demasiado, caen a la Tierra en forma de lluvia, nieve o granizo."}], "questions": [{"q": "¿Qué es el ciclo del agua?", "a": "El recorrido que hace el agua en la Tierra, pasando por distintos estados."}, {"q": "¿Qué ocurre en la evaporación?", "a": "El calor del Sol calienta el agua de los mares, ríos y lagos, que se convierte en vapor y sube a la atmósfera."}, {"q": "¿Qué ocurre en la condensación?", "a": "El vapor de agua se enfría en las capas altas de la atmósfera y forma pequeñas gotas que se agrupan en nubes."}, {"q": "¿Qué ocurre en la precipitación?", "a": "Cuando las gotas pesan demasiado, caen a la Tierra en forma de lluvia, nieve o granizo."}, {"q": "¿Qué es la escorrentía?", "a": "El agua que cae corre por la superficie y vuelve a los ríos y mares, donde el ciclo comienza otra vez."}], "cards": [{"q": "¿Qué es el ciclo del agua?", "a": "El recorrido que hace el agua en la Tierra, pasando por distintos estados."}, {"q": "¿Qué ocurre en la evaporación?", "a": "El calor del Sol calienta el agua de los mares, ríos y lagos, que se convierte en vapor y sube a la atmósfera."}, {"q": "¿Qué ocurre en la condensación?", "a": "El vapor de agua se enfría en las capas altas de la atmósfera y forma pequeñas gotas que se agrupan en nubes."}, {"q": "¿Qué ocurre en la precipitación?", "a": "Cuando las gotas pesan demasiado, caen a la Tierra en forma de lluvia, nieve o granizo."}, {"q": "¿Qué es la escorrentía?", "a": "El agua que cae corre por la superficie y vuelve a los ríos y mares, donde el ciclo comienza otra vez."}], "map": {"t": "El ciclo del agua", "c": [{"t": "¿Qué es?", "c": [{"t": "Ciclo del agua: el recorrido que hace el agua…", "c": []}, {"t": "Escorrentía: el agua que cae corre por la…", "c": []}]}, {"t": "Datos", "c": [{"t": "Qué ocurre en la evaporación → el calor del…", "c": []}, {"t": "Qué ocurre en la condensación → el vapor de…", "c": []}, {"t": "Qué ocurre en la precipitación → Cuando las…", "c": []}]}, {"t": "Palabras clave", "c": [{"t": "Ciclo del agua", "c": []}, {"t": "Escorrentía", "c": []}, {"t": "Evaporación", "c": []}, {"t": "Condensación", "c": []}]}]}, "chat": [{"q": "¿Qué pasa en la evaporación?", "a": "Te lo explico: el calor del Sol calienta el agua de los mares, ríos y lagos, que se convierte en vapor y sube a la atmósfera.", "src": "Evaporación: El calor del Sol calienta el agua de los mares, ríos y lagos, que se convierte en vapor y sube a la atmósfera."}, {"q": "¿Qué es la condensación?", "a": "Sobre la condensación, tu texto dice:\n• Condensación: El vapor de agua se enfría en las capas altas de la atmósfera y forma pequeñas gotas que se agrupan en nubes.", "src": ""}, {"q": "¿Qué ocurre en la precipitación?", "a": "Cuando las gotas pesan demasiado, caen a la Tierra en forma de lluvia, nieve o granizo.", "src": "Precipitación: Cuando las gotas pesan demasiado, caen a la Tierra en forma de lluvia, nieve o granizo."}]}, {"id": "revolucion", "icon": "🏛️", "tema": "Historia", "title": "La Revolución Francesa", "text": "LA REVOLUCIÓN FRANCESA\n\nLa Revolución Francesa fue un movimiento político y social que comenzó en Francia en 1789 y terminó en 1799.\n\nCausas\nLas principales causas fueron la crisis económica, el hambre del pueblo y las ideas de la Ilustración, que defendían la libertad y la igualdad.\n\nHechos importantes\nEn 1789, el pueblo de París tomó la Bastilla, una prisión que representaba el poder del rey.\nEse mismo año se aprobó la Declaración de los Derechos del Hombre y del Ciudadano.\nEn 1793, el rey Luis XVI fue ejecutado.\n\nConsecuencias\nLa revolución acabó con la monarquía absoluta en Francia y difundió por Europa las ideas de libertad, igualdad y fraternidad.", "keywords": ["REVOLUCIÓN FRANCESA", "PUEBLO DE PARÍS", "REY LUIS XVI", "ILUSTRACIÓN", "CRISIS ECONÓMICA", "FRANCIA"], "summary": [{"label": "Qué es", "text": "La Revolución Francesa fue un movimiento político y social que comenzó en Francia en 1789 y terminó en 1799."}, {"label": "Causas", "text": "Las principales causas fueron la crisis económica, el hambre del pueblo y las ideas de la Ilustración, que defendían la libertad y la igualdad."}, {"label": "Fechas clave", "text": "En 1789, el pueblo de París tomó la Bastilla, una prisión que representaba el poder del rey. En 1793, el rey Luis XVI fue ejecutado."}, {"label": "Hechos clave", "text": "La revolución acabó con la monarquía absoluta en Francia y difundió por Europa las ideas de libertad, igualdad y fraternidad."}], "questions": [{"q": "¿Cuándo comenzó la Revolución Francesa?", "a": "En 1789."}, {"q": "¿Dónde comenzó la Revolución Francesa?", "a": "En Francia."}, {"q": "¿Qué fue la Revolución Francesa?", "a": "Un movimiento político y social que comenzó en Francia en 1789 y terminó en 1799."}, {"q": "¿Cuáles fueron las causas de la Revolución Francesa?", "a": "La crisis económica, el hambre del pueblo y las ideas de la Ilustración, que defendían la libertad y la igualdad."}, {"q": "¿Qué tomó el pueblo de París?", "a": "La Bastilla."}, {"q": "¿Cuándo fue ejecutado el rey Luis XVI?", "a": "En 1793."}], "cards": [{"q": "¿Cuándo comenzó la Revolución Francesa?", "a": "En 1789."}, {"q": "¿Dónde comenzó la Revolución Francesa?", "a": "En Francia."}, {"q": "¿Qué fue la Revolución Francesa?", "a": "Un movimiento político y social que comenzó en Francia en 1789 y terminó en 1799."}, {"q": "¿Cuáles fueron las causas de la Revolución Francesa?", "a": "La crisis económica, el hambre del pueblo y las ideas de la Ilustración, que defendían la libertad y la igualdad."}, {"q": "¿Qué tomó el pueblo de París?", "a": "La Bastilla."}, {"q": "¿Cuándo fue ejecutado el rey Luis XVI?", "a": "En 1793."}], "map": {"t": "La Revolución Francesa", "c": [{"t": "¿Qué es?", "c": [{"t": "Revolución Francesa: un movimiento político y…", "c": []}]}, {"t": "Causas", "c": [{"t": "Causas de la revolución francesa: la crisis…", "c": []}]}, {"t": "Hechos importantes", "c": [{"t": "Pueblo de París: tomó la Bastilla", "c": []}, {"t": "Rey Luis XVI: en 1793", "c": []}, {"t": "Ese mismo año se aprobó la Declaración de los…", "c": []}]}, {"t": "Consecuencias", "c": [{"t": "Revolución: acabó con la monarquía absoluta", "c": []}]}]}, "chat": [{"q": "¿Cuándo comenzó la Revolución Francesa?", "a": "En 1789.", "src": "La Revolución Francesa fue un movimiento político y social que comenzó en Francia en 1789 y terminó en 1799."}, {"q": "¿Cuáles fueron las causas?", "a": "Según tu texto, en Causas: Las principales causas fueron la crisis económica, el hambre del pueblo y las ideas de la Ilustración, que defendían la libertad y la igualdad.", "src": ""}, {"q": "¿Cuáles fueron las consecuencias?", "a": "Según tu texto, en Consecuencias: La revolución acabó con la monarquía absoluta en Francia y difundió por Europa las ideas de libertad, igualdad y fraternidad.", "src": ""}]}, {"id": "recetas", "icon": "🍳", "tema": "Cocina", "title": "Recetas fáciles para cada día", "text": "RECETAS FÁCILES PARA CADA DÍA\n\nCÓDIGO DE COLOR\n\nCada receta lleva un color para saber para qué momento del día es recomendada.\n\nAmarillo: Desayuno.\n\nVerde claro: Almuerzo ligero.\n\nAzul oscuro: Cena.\n\nCANTIDADES\n\n• Las recetas están pensadas para una ración. Para preparar más raciones, solo hay que multiplicar los ingredientes por el número de raciones.\n\n• Se usan las siguientes equivalencias:\nc/c: cucharada de café\nc/s: cucharada sopera\n\nÍNDICE\n\nBEBIDAS\n\n4 Batido de fresa y avena\n\n5 Limonada de menta\n\nENTRANTES\nCrema fría de pepino con\n6 yogur y eneldo\n\n7 Hummus de garbanzos\n\nPLATO PRINCIPAL\n\n8 Pollo al horno con patatas\n\n9 Lentejas guisadas\n\nPOSTRES\n\n10 Manzana asada con canela\n\n4\n\nBATIDO DE FRESA Y AVENA\n\nINGREDIENTES PARA UNA RACIÓN\n\n• 6 fresas maduras\n• 200 ml de leche\n• 2 c/s de copos de avena\n• 1 c/c de miel\n\nELABORACIÓN\n\n1. Lavar las fresas y quitarles el tallo.\n2. Poner las fresas, la leche, la avena y la miel en el vaso de la batidora.\n3. Triturar hasta que quede una mezcla sin grumos.\n4. Servir frío\n\nSe puede cambiar la leche por una bebida vegetal.\n\n5\n\nLIMONADA DE MENTA\n\nINGREDIENTES\n\n• 1 litro de agua fría\n• Zumo de 3 limones\n• Un manojo de hojas de menta\n• 3 c/s de azúcar\n\nELABORACIÓN\n\n1. Disolver el azúcar en un poco de agua tibia.\n2. Mezclar el resto del agua con el zumo de limón y el azúcar disuelto.\n3. Añadir las hojas de menta y dejar reposar en la nevera durante una hora.\n\n6\n\nCREMA FRÍA DE PEPINO CON YOGUR Y ENELDO\n\nINGREDIENTES PARA DOS RACIONES\n\n• 1 pepino grande | • 1 diente de ajo\n• 2 yogures naturales | • Eneldo fresco\n• Medio limón | • Sal\n\nELABORACIÓN\n\n1. Pelar el pepino y cortarlo a trozos.\n2. Triturar el pepino con los yogures, el ajo y el zumo de medio limón.\n3. Añadir el eneldo picado y una pizca de sal.\n4. Dejar enfriar en la nevera antes de servir.\n\n7\n\nHUMMUS DE GARBANZOS\n\nINGREDIENTES\n\n• 200 g de garbanzos cocidos\n• 1 c/s de pasta de sésamo\n• Zumo de medio limón\n• 1 diente de ajo\n• Aceite de oliva virgen\n\nELABORACIÓN\n\n1. Escurrir y lavar los garbanzos.\n2. Triturar los garbanzos con la pasta de sésamo, el ajo y el zumo de limón.\n3. Añadir un chorro de aceite hasta que quede una crema suave.\n\n8\n\nPOLLO AL HORNO CON PATATAS\n\nINGREDIENTES PARA UNA RACIÓN\n\n• 1 muslo de pollo\n• 2 patatas medianas\n• 1 cebolla\n• Para el adobo:\n- 1 c/s de aceite de oliva virgen\n- Pimentón dulce\n\nELABORACIÓN\n\n1. Pelar las patatas y la cebolla y cortarlas a rodajas.\n2. Colocarlas en una bandeja con el pollo encima.\n3. Untar el pollo con el aceite y el pimentón.\n4. Hornear a\no\n\n180 C durante 45 minutos.\n5. Servir caliente.\n\n9\n\nLENTEJAS GUISADAS\n\nINGREDIENTES PARA DOS RACIONES\n\n• 150 g de lentejas\n• 1 zanahoria\n• 1 patata\n• Media cebolla\n• 1 litro de agua\n\nELABORACIÓN\n\n1. Picar la cebolla y la zanahoria.\n2. Sofreír la verdura con un poco de aceite.\n3. Añadir las lentejas, la patata troceada y el agua.\n4. Cocer a fuego lento durante 40 minutos.\n\n10\n\nMANZANA ASADA CON CANELA\n\nINGREDIENTES\n\n• 1 manzana\n• 1 c/c de canela\n• 1 c/c de miel\n\nELABORACIÓN\n\n1. Lavar la manzana y quitarle el corazón.\n2. Rellenar el hueco con la miel y la canela.\n3. Asar en el microondas durante 4 minutos.", "keywords": ["MIEL", "AGUA", "ZUMO", "AJO", "ACEITE", "CEBOLLA", "FRESAS", "LECHE"], "summary": [{"label": "Recetas", "text": "El documento tiene 7 recetas, cada una con sus ingredientes y su elaboración. Bebidas: Batido de fresa y avena y Limonada de menta. Entrantes: Crema fría de pepino con yogur y eneldo y Hummus de garbanzos. Plato principal: Pollo al horno con patatas y Lentejas guisadas. Postres: Manzana asada con canela."}], "questions": [{"q": "¿Qué ingredientes lleva el batido de fresa y avena?", "a": "6 fresas maduras, 200 ml de leche, 2 c/s de copos de avena y 1 c/c de miel."}, {"q": "¿Cuál es el primer paso para preparar el batido de fresa y avena?", "a": "Lavar las fresas y quitarles el tallo."}, {"q": "¿Qué ingredientes lleva la limonada de menta?", "a": "1 litro de agua fría, zumo de 3 limones, un manojo de hojas de menta y 3 c/s de azúcar."}, {"q": "¿Cuál es el primer paso para preparar la limonada de menta?", "a": "Disolver el azúcar en un poco de agua tibia."}, {"q": "¿Qué cantidad de agua fría lleva la limonada de menta?", "a": "1 litro."}, {"q": "¿Qué ingredientes lleva la crema fría de pepino con yogur y eneldo?", "a": "1 pepino grande, 2 yogures naturales, medio limón, 1 diente de ajo, eneldo fresco y sal."}], "cards": [{"q": "¿Qué ingredientes lleva el batido de fresa y avena?", "a": "6 fresas maduras, 200 ml de leche, 2 c/s de copos de avena y 1 c/c de miel."}, {"q": "¿Cuál es el primer paso para preparar el batido de fresa y avena?", "a": "Lavar las fresas y quitarles el tallo."}, {"q": "¿Qué ingredientes lleva la limonada de menta?", "a": "1 litro de agua fría, zumo de 3 limones, un manojo de hojas de menta y 3 c/s de azúcar."}, {"q": "¿Cuál es el primer paso para preparar la limonada de menta?", "a": "Disolver el azúcar en un poco de agua tibia."}, {"q": "¿Qué cantidad de agua fría lleva la limonada de menta?", "a": "1 litro."}, {"q": "¿Qué ingredientes lleva la crema fría de pepino con yogur y eneldo?", "a": "1 pepino grande, 2 yogures naturales, medio limón, 1 diente de ajo, eneldo fresco y sal."}], "map": {"t": "Recetas fáciles para cada día", "c": [{"t": "Bebidas", "c": [{"t": "Batido de fresa y avena", "c": []}, {"t": "Limonada de menta", "c": []}]}, {"t": "Entrantes", "c": [{"t": "Crema fría de pepino con yogur y eneldo", "c": []}, {"t": "Hummus de garbanzos", "c": []}]}, {"t": "Plato principal", "c": [{"t": "Pollo al horno con patatas", "c": []}, {"t": "Lentejas guisadas", "c": []}]}, {"t": "Postres", "c": [{"t": "Manzana asada con canela", "c": []}]}]}, "chat": [{"q": "¿Qué recetas hay?", "a": "El documento tiene 7 recetas.\nBebidas: Batido de fresa y avena, Limonada de menta.\nEntrantes: Crema fría de pepino con yogur y eneldo, Hummus de garbanzos.\nPlato principal: Pollo al horno con patatas, Lentejas guisadas.\nPostres: Manzana asada con canela.", "src": ""}, {"q": "¿Qué ingredientes lleva el hummus?", "a": "Hummus de garbanzos lleva: 200 g de garbanzos cocidos, 1 c/s de pasta de sésamo, zumo de medio limón, 1 diente de ajo y aceite de oliva virgen.", "src": ""}, {"q": "¿Qué recetas llevan miel?", "a": "Llevan miel estas 2 recetas: Batido de fresa y avena, Manzana asada con canela.", "src": ""}]}];
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+
+/* ---- Taylor: poses, parpadeo y mirada ---- */
+const POSES = ['pose-normal', 'pose-happy', 'pose-thinking', 'pose-celebrating', 'pose-surprised', 'pose-reading', 'pose-waving', 'pose-studying'];
+function pose(el, p, ms) {
+  const svg = el.querySelector('svg');
+  POSES.forEach(x => svg.classList.remove(x));
+  svg.classList.add(p);
+  clearTimeout(el._t);
+  if (ms) el._t = setTimeout(() => pose(el, 'pose-normal'), ms);
+}
+const heroT = $('#hero-taylor'), guideT = $('#guide-taylor');
+document.querySelectorAll('.taylor svg').forEach(svg => { svg.classList.add('mascot-interactive'); svg.querySelectorAll('.msg-look').forEach(g => g.style.transform = ''); });
+let pointer = null;
+addEventListener('pointermove', e => { pointer = { x: e.clientX, y: e.clientY }; requestAnimationFrame(look); }, { passive: true });
+function look() {
+  document.querySelectorAll('.taylor svg').forEach(svg => {
+    const r = svg.getBoundingClientRect();
+    if (!r.width || !pointer) return;
+    const vx = pointer.x - (r.left + r.width / 2), vy = pointer.y - (r.top + r.height * .32);
+    const d = Math.hypot(vx, vy) || 1, a = Math.min(5, d / 10);
+    const t = `translate(${(vx / d * a).toFixed(1)}px, ${(vy / d * a * .85).toFixed(1)}px)`;
+    svg.querySelectorAll('.msg-look').forEach(g => g.style.transform = t);
+  });
+}
+if (!reduce) setInterval(() => document.querySelectorAll('.taylor svg').forEach(svg => { svg.classList.add('is-blinking'); setTimeout(() => svg.classList.remove('is-blinking'), 160); }), 3800);
+const HELLO = ['¡Hola! 👋', '¿Estudiamos juntos?', 'Me encantan los apuntes ordenados 📚', '¡Hey! Prueba un apunte de abajo 👇'];
+let hi = 0;
+heroT.addEventListener('click', () => { pose(heroT, 'pose-celebrating', 1600); $('#hero-bubble').innerHTML = HELLO[hi++ % HELLO.length]; });
+
+/* ---- Taylor guía: comenta cada sección ---- */
+const guide = $('#guide'), gText = $('#guide-text'), gBubble = $('#guide-bubble');
+const SAYS = {
+  pruebalo: ['Elige un apunte y toca «Analizar». ¡Mira lo rápido que lo ordeno! ✨', 'pose-waving'],
+  funciones: ['Esto es lo que hago en tu teléfono. ¡Y sin internet! 📵', 'pose-happy'],
+  planes: ['Puedes empezar gratis. Con Pro no hay límites ⭐', 'pose-studying'],
+  preguntas: ['¿Otra duda? Escríbenos, te respondemos 💌', 'pose-reading']
+};
+let muted = false, lastSec = '';
+let sayT = 0;
+function say(text, p) { if (muted) return; gText.innerHTML = text; gBubble.classList.remove('out'); gBubble.style.animation = 'none'; void gBubble.offsetWidth; gBubble.style.animation = 'pop .4s var(--ease) both'; if (p) pose(guideT, p, 2200); clearTimeout(sayT); sayT = setTimeout(() => gBubble.classList.add('out'), 6500); }
+$('#guide-x').addEventListener('click', e => { e.stopPropagation(); gBubble.classList.add('out'); muted = true; });
+guideT.addEventListener('click', () => { muted = false; const s = SAYS[lastSec] || SAYS.pruebalo; say(s[0], 'pose-celebrating'); });
+const heroIO = new IntersectionObserver(([e]) => guide.classList.toggle('hide', e.isIntersecting), { threshold: .25 });
+heroIO.observe($('.hero'));
+const secIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && e.target.id !== lastSec) { lastSec = e.target.id; const s = SAYS[lastSec]; if (s) say(s[0], s[1]); } }), { threshold: .35 });
+document.querySelectorAll('section[id]').forEach(s => secIO.observe(s));
+const revIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revIO.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll('.reveal').forEach(el => revIO.observe(el));
+
+/* ---- Demo ---- */
+let cur = null, tab = 'resumen';
+const picker = $('#picker'), panel = $('#panel'), paper = $('#paper');
+DEMO.forEach((d, i) => {
+  const b = document.createElement('button');
+  b.className = 'pick'; b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+  b.innerHTML = `<span class="ic">${d.icon}</span><b>${esc(d.title)}</b><small>${esc(d.tema)}</small>`;
+  b.addEventListener('click', () => choose(i));
+  picker.appendChild(b);
+});
+function choose(i) {
+  cur = DEMO[i];
+  [...picker.children].forEach((b, k) => b.setAttribute('aria-pressed', String(k === i)));
+  $('#paper-text').textContent = cur.text;
+  paper.scrollTop = 0;
+  panel.innerHTML = `<div class="empty"><div><b>${esc(cur.title)}</b>Este es el apunte tal como lo pegarías en la app.<br><br><button class="btn primary" id="go">✨ Analizar con Jokmá</button></div></div>`;
+  $('#go').addEventListener('click', analyze);
+  say(`¡Buen tema! «${esc(cur.title)}». Toca <b>Analizar</b> 👉`, 'pose-reading');
+}
+async function analyze() {
+  paper.classList.add('scanning');
+  panel.innerHTML = `<div class="loading"><div><div class="dots"><span></span><span></span><span></span></div><p>Leyendo y ordenando tus ideas…</p></div></div>`;
+  pose(heroT, 'pose-thinking'); say('Déjame leerlo… 🤔', 'pose-thinking');
+  await wait(1500);
+  paper.classList.remove('scanning');
+  pose(heroT, 'pose-celebrating', 1800);
+  say(`¡Listo! Saqué ${cur.questions.length} preguntas, ${cur.cards.length} tarjetas y un mapa mental 🎉`, 'pose-celebrating');
+  tab = 'resumen'; render();
+}
+const TABS = [['resumen', '📄 Resumen'], ['preguntas', '❓ Preguntas'], ['tarjetas', '🃏 Tarjetas'], ['mapa', '🗺️ Mapa'], ['taylor', '🐻 Pregúntale a Taylor']];
+function render() {
+  panel.innerHTML = `<div class="tabs" role="tablist">${TABS.map(([k, t]) => `<button role="tab" data-t="${k}" aria-selected="${k === tab}">${t}</button>`).join('')}</div><div class="tabbody" id="tb"></div>`;
+  panel.querySelectorAll('[data-t]').forEach(b => b.addEventListener('click', () => { tab = b.dataset.t; render(); }));
+  ({ resumen, preguntas, tarjetas, mapa, taylor: chat })[tab]($('#tb'));
+}
+function resumen(el) {
+  el.innerHTML = cur.summary.map(s => `<div class="sum"><b>${esc(s.label)}</b><p>${esc(s.text)}</p></div>`).join('') +
+    `<b style="font-size:13px;color:#cfc3ff;text-transform:uppercase;letter-spacing:.06em">Palabras clave</b><div class="chips">${cur.keywords.map(k => `<span class="chip">${esc(k.charAt(0) + k.slice(1).toLowerCase())}</span>`).join('')}</div>`;
+}
+function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function preguntas(el) {
+  const qs = cur.questions; let i = 0, ok = 0;
+  const pool = DEMO.flatMap(d => d.questions.map(q => q.a));
+  const show = () => {
+    if (i >= qs.length) {
+      el.innerHTML = `<div class="quiz" style="text-align:center;padding:20px 0"><div style="font-size:48px">${ok === qs.length ? '🏆' : ok >= qs.length / 2 ? '🎉' : '💪'}</div><h3>¡Terminaste! ${ok} de ${qs.length} correctas</h3><p class="hint">En la app, lo que fallas vuelve en el Repaso inteligente.</p><button class="btn" id="again">Otra vez</button></div>`;
+      $('#again').addEventListener('click', () => preguntas(el));
+      say(ok === qs.length ? '¡Perfecto! Eres una máquina 🏆' : '¡Bien! Lo que fallaste lo repasamos después 💪', 'pose-celebrating');
+      return;
+    }
+    const q = qs[i];
+    const others = shuffle([...new Set(cur.questions.map(x => x.a).filter(a => a !== q.a))]);
+    const extra = shuffle(pool.filter(a => a !== q.a && !others.includes(a)));
+    const opts = shuffle([q.a, ...others.slice(0, 3), ...extra].slice(0, 4));
+    el.innerHTML = `<div class="quiz"><div class="qn">Pregunta ${i + 1} de ${qs.length}</div><h3>${esc(q.q)}</h3>${opts.map(o => `<button class="opt">${esc(o)}</button>`).join('')}<div class="score"><span>✅ ${ok} correctas</span><span></span></div></div>`;
+    el.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
+      const right = b.textContent === q.a;
+      el.querySelectorAll('.opt').forEach(x => { x.disabled = true; if (x.textContent === q.a) x.classList.add('ok'); });
+      if (!right) b.classList.add('bad'); else ok++;
+      pose(heroT, right ? 'pose-happy' : 'pose-surprised', 1200);
+      say(right ? '¡Correcto! 🎉' : 'Casi… la buena está en verde 💚', right ? 'pose-happy' : 'pose-surprised');
+      const nx = document.createElement('button'); nx.className = 'btn small'; nx.textContent = i + 1 < qs.length ? 'Siguiente →' : 'Ver resultado';
+      nx.addEventListener('click', () => { i++; show(); });
+      el.querySelector('.score span:last-child').appendChild(nx);
+    }));
+  };
+  show();
+}
+function tarjetas(el) {
+  el.innerHTML = `<p class="hint">Toca una tarjeta para ver la respuesta.</p><div class="cards">${cur.cards.map(c => `<button class="flip" type="button"><div class="in"><div class="f">${esc(c.q)}</div><div class="b">${esc(c.a)}</div></div></button>`).join('')}</div>`;
+  el.querySelectorAll('.flip').forEach(c => c.addEventListener('click', () => c.classList.toggle('on')));
+}
+function mapa(el) {
+  const COL = ['#7C5CFF', '#22D3AA', '#FF6B6B', '#FFC65C', '#5EB3FF', '#F078C0'];
+  el.innerHTML = `<div class="mm"><div class="root">${esc(cur.map.t)}</div><div class="branches">${cur.map.c.map((b, i) => `<div class="br" style="--c:${COL[i % COL.length]};animation-delay:${i * .08}s"><b>${esc(b.t)}</b>${b.c.map(x => `<span>${esc(x.t)}</span>`).join('')}</div>`).join('')}</div></div><p class="note">En la app puedes mover las ideas, cambiarles el color, abrir su ficha y guardar el mapa como imagen o PDF.</p>`;
+}
+function chat(el) {
+  el.innerHTML = `<div class="chat" id="chat"><div class="msg ty">¡Hola! Pregúntame lo que quieras sobre «${esc(cur.title)}». Respondo con lo que dice el apunte 📖</div></div><div class="asks">${cur.chat.map((c, i) => `<button data-i="${i}">${esc(c.q)}</button>`).join('')}</div><p class="note">En la app puedes escribirle cualquier pregunta.</p>`;
+  el.querySelectorAll('.asks button').forEach(b => b.addEventListener('click', async () => {
+    const c = cur.chat[b.dataset.i], box = $('#chat');
+    el.querySelectorAll('.asks button').forEach(x => x.disabled = true);
+    box.insertAdjacentHTML('beforeend', `<div class="msg me">${esc(c.q)}</div>`);
+    box.insertAdjacentHTML('beforeend', `<div class="msg ty" id="typing"><span class="dots"><span></span><span></span><span></span></span></div>`);
+    el.scrollTop = el.scrollHeight;
+    pose(guideT, 'pose-thinking'); pose(heroT, 'pose-thinking');
+    await wait(900);
+    $('#typing').remove();
+    box.insertAdjacentHTML('beforeend', `<div class="msg ty">${esc(c.a)}${c.src ? `<span class="src">📖 Del texto: ${esc(c.src)}</span>` : ''}</div>`);
+    el.scrollTop = el.scrollHeight;
+    pose(guideT, 'pose-happy', 1500); pose(heroT, 'pose-happy', 1500);
+    b.remove();
+    el.querySelectorAll('.asks button').forEach(x => x.disabled = false);
+  }));
+}
+choose(0);
+</script>
+</body>
+</html>
