@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Página no encontrada · Jokmá</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" sizes="48x48" href="/jokma/icons/favicon-48.png">
+<style>
+  :root { --bg: #0E1016; --card: #171a25; --line: rgba(255,255,255,.09); --text: #F2F3F8; --muted: #9BA0B5; --accent: #7C5CFF; --accent-rgb: 124,92,255; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; color: var(--text);
+    background: radial-gradient(60vmax 40vmax at 15% 0%, rgba(var(--accent-rgb), .22), transparent 60%), var(--bg);
+    font: 16px/1.55 system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; text-align: center; }
+  .card { width: min(440px, 100%); background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 32px 22px; }
+  .num { font-size: 64px; font-weight: 800; letter-spacing: -.03em; line-height: 1; color: var(--accent); }
+  h1 { font-size: 22px; margin: 12px 0 6px; }
+  p { color: var(--muted); margin: 0 0 22px; }
+  a.btn { display: inline-block; text-decoration: none; color: #fff; font-weight: 700; padding: 12px 22px; border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent), #9b85ff); box-shadow: 0 10px 26px rgba(var(--accent-rgb), .32); }
+  img { width: 72px; height: 72px; border-radius: 18px; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <img src="/jokma/icons/icon-192.png" alt="Logo de Jokmá">
+    <div class="num">404</div>
+    <h1 id="t">Esta página no existe</h1>
+    <p id="d">Taylor la buscó por toda la biblioteca y no la encontró. Puede que el enlace esté mal escrito.</p>
+    <a class="btn" id="b" href="/jokma/">Volver a Jokmá</a>
+  </main>
+<script>
+  // en inglés si así lo eligió en el sitio o si el navegador está en inglés
+  try {
+    const lang = localStorage.getItem('jokma.web.lang') || ((navigator.language || '').startsWith('es') ? 'es' : 'en');
+    if (lang === 'en') {
+      document.documentElement.lang = 'en'; document.title = 'Page not found · Jokmá';
+      document.getElementById('t').textContent = 'This page doesn\'t exist';
+      document.getElementById('d').textContent = 'Taylor searched the whole library and couldn\'t find it. The link may be mistyped.';
+      document.getElementById('b').textContent = 'Back to Jokmá';
+    }
+  } catch (e) { /* se queda en español */ }
+</script>
+</body>
+</html>

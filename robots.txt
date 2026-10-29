@@ -1,0 +1,5 @@
+# Todo el sitio se puede indexar
+User-agent: *
+Allow: /
+
+Sitemap: https://delgadoangie196-ops.github.io/jokma/sitemap.xml
